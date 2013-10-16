@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'RSSCue' target in the 'RSSCue' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
