@@ -10,6 +10,8 @@
 
 @interface RCPreferencesController : NSWindowController
 
+@property (assign) IBOutlet NSArrayController *feedsArrayController;
+
 - (IBAction)addRemoveFeed:(id)sender;
 
 @end

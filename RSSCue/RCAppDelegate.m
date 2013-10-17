@@ -35,8 +35,6 @@
 
 #pragma mark *** Preferences ***
 - (IBAction)showPreferencesPanel:(id)sender {
-    NSLog(@"sender %@",self);
-
     if (!_preferencesPanelController) {
         _preferencesPanelController = [[RCPreferencesController alloc] initWithWindowNibName:@"Preferences"];
         

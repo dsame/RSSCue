@@ -10,6 +10,8 @@
 
 @implementation RCPreferencesController
 
+@synthesize feedsArrayController;
+
 #pragma mark *** Inits ***
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -30,9 +32,24 @@
 
 #pragma mark *** Buttons ***
 - (IBAction)addRemoveFeed:(id)sender {
+    NSInteger button=[sender selectedSegment];
+    NSLog(@"btn=%d",(int)button);
+    //NSDictionary * feed;
+    switch (button) {
+        case 0:
+            //feed=[[NSDictionary dictionaryWithObjectsAndKeys:@"<New Feed>",@"name",nil] autorelease];
+            //[feedsArrayController addObject:feed];
+            [feedsArrayController add: self];
+            break;
+        case 1:
+            [feedsArrayController remove:self]; 
+        default:
+            break;
+    }
+    /*
     NSSegmentedControl * control=sender;
     NSUserDefaultsController *udc=[NSUserDefaultsController sharedUserDefaultsController];
-    NSLog(@"Clicked %D",[control selectedSegment]);
+    NSLog(@"Clicked %D",[control selectedSegment]);*/
 }
 
 @end
