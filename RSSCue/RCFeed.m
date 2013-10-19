@@ -108,7 +108,7 @@ typedef enum {
 				[_newItems addObject:_item];
 			}
             [_item release];
-			_item = [RGItem new];
+			_item = [RCItem new];
 			_state=kItemMet;
 		}
 	}else if (_state==kItemMet){

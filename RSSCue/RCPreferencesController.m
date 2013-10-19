@@ -11,6 +11,8 @@
 @implementation RCPreferencesController
 
 @synthesize feedsArrayController;
+@synthesize selectionIndexes;
+@synthesize buttons=_buttons;
 
 #pragma mark *** Inits ***
 - (id)initWithWindow:(NSWindow *)window
@@ -26,20 +28,35 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+
+}
+- (void) awakeFromNib {
+    [feedsArrayController addObserver:self forKeyPath:@"selection" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
+    unsigned long c=[[feedsArrayController selectedObjects] count];
+    [self.buttons setEnabled:c>0 forSegment:1];
+}
+
+#pragma mark *** observers ***
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"selection"]){
+        unsigned long c=[[feedsArrayController selectedObjects] count];
+        [self.buttons setEnabled:c>0 forSegment:1];
+    }
 }
 
 #pragma mark *** Buttons ***
 - (IBAction)addRemoveFeed:(id)sender {
     NSInteger button=[sender selectedSegment];
-    NSLog(@"btn=%d",(int)button);
-    //NSDictionary * feed;
+    CFUUIDRef theUUID;
+    CFStringRef string;
+    
     switch (button) {
         case 0:
-            //feed=[[NSDictionary dictionaryWithObjectsAndKeys:@"<New Feed>",@"name",nil] autorelease];
-            //[feedsArrayController addObject:feed];
-            [feedsArrayController add: self];
+            theUUID = CFUUIDCreate(NULL);
+            string = CFUUIDCreateString(NULL, theUUID);
+            CFRelease(theUUID);
+            [feedsArrayController addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"uuid",[(NSString *)string autorelease],@"name",@"",@"url",@"", @"logon",@"",@"password",@"",nil]];
             break;
         case 1:
             [feedsArrayController remove:self]; 

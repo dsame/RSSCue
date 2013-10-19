@@ -23,7 +23,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    NSDictionary *appDefaults = [NSDictionary
+                                 dictionaryWithObjectsAndKeys:@"name",nil,@"img", nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 }
 
 - (void) awakeFromNib {
@@ -43,7 +45,7 @@
         
     }
     [_preferencesPanelController showWindow:self];
-    
+    [[_preferencesPanelController window] makeKeyAndOrderFront:self];
 }
 
 @end

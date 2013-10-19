@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "RGItem.h"
+#import "RCItem.h"
 
 
 @interface RCFeed : NSObject<NSXMLParserDelegate> {
@@ -17,7 +17,7 @@
 	int _waitFor;
 	
 	NSMutableArray * _newItems;
-	RGItem * _item;//current
+	RCItem * _item;//current
 }
 
 @property (copy) NSURL * url;
