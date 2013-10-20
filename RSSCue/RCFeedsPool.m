@@ -28,8 +28,10 @@ static RCFeedsPool * _sharedPool;
     [_timers release];
     NSArray *configs=[[NSUserDefaults standardUserDefaults] arrayForKey:@"feeds"];
     _timers=[[NSMutableArray alloc] initWithCapacity:[configs count]];
+    NSLog(@"Timers will be respawned for %lu feeds",[configs count]);
     for (NSDictionary* config in configs){
         RCFeed* feed=[[[RCFeed alloc] initWithConfiguration:config andDelegate:self] autorelease];
+        NSLog(@"Feed %@ started",feed.name);
         [feed run];
         NSTimeInterval interval=[[config objectForKey:@"interval"] doubleValue];
         if (interval<10) interval=10; //precaution
@@ -43,20 +45,19 @@ static RCFeedsPool * _sharedPool;
 }
 
 - (void)runFeed:(NSTimer*)timer {
-    NSLog(@"Timer started on %@", @"aaaa");
     RCFeed *feed=[[timer userInfo] objectForKey:@"feed"];
+    NSLog(@"Feed %@ started",feed.name);
     [feed run];
 }
 
 #pragma mark Feed Deligators
 - (void) feedFailed:(RCFeed *) feed{
-    NSLog(@"Feed");
-    
+    NSLog(@"Feed \"%@\" failed with the message: %@(%@)",feed.name,[feed.error localizedDescription],[feed.error localizedRecoverySuggestion]);    
 }
 - (void) feedSuccess:(RCFeed *) feed{
-    NSLog(@"succ");
+    NSLog(@"Feed \"%@\" success",feed.name);
 }
 - (void) feedStateChanged:(RCFeed *) feed{
-    NSLog(@"state=%d",feed.state);
 }
+
 @end

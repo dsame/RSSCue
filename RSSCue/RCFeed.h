@@ -43,6 +43,7 @@ typedef enum {
 @property (copy) NSString * description;
 @property (readonly) NSArray * items;
 @property (readonly) NSError * error;
+@property (readonly) NSString * name;
 @property (readonly,assign) BOOL modified;
 @property (retain) id <RCFeedDelegate> delegate;
 @property (assign) RC_FEED_STATE state;

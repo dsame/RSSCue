@@ -40,6 +40,10 @@ typedef enum {
     return _isModified;
 }
 
+- (NSString *) name{
+    return [_configuration objectForKey:@"name"];
+}
+
 #pragma mark Initialization
 
 - (id)initWithConfiguration:(NSDictionary *)config andDelegate:(id<RCFeedDelegate>)delegate{

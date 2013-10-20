@@ -7,9 +7,9 @@
 //
 
 #import "RCPreferencesController.h"
+#import "RCFeedsPool.h"
 
 @implementation RCPreferencesController
-@synthesize testButton;
 @synthesize progress;
 @synthesize info;
 
@@ -20,7 +20,8 @@
 - (void) setControlsEnabled {
     unsigned long c=[[feedsArrayController selectedObjects] count];
     [self.buttons setEnabled:c>0 forSegment:1];
-    [self.testButton setEnabled:c>0];
+    [self.buttons setEnabled:c>0 forSegment:2];
+    [self.buttons setEnabled:c>0 forSegment:3];
 }
 
 
@@ -89,18 +90,16 @@
             break;
         case 1:
             [feedsArrayController remove:self]; 
+            break;
+        case 2:
+            [self.progress startAnimation:self];
+            NSDictionary * config=[[feedsArrayController selectedObjects] objectAtIndex:0];
+            [_feed release];
+            _feed=[[[RCFeed alloc] initWithConfiguration:config andDelegate:self] retain];
+            [_feed run];
         default:
             break;
     }
-}
-
-- (IBAction)testFeed:(id)sender {
-    [self clearInfo];
-    [self.progress startAnimation:self];
-    NSDictionary * config=[[feedsArrayController selectedObjects] objectAtIndex:0];
-    [_feed release];
-    _feed=[[[RCFeed alloc] initWithConfiguration:config andDelegate:self] retain];
-    [_feed run];
 }
 
 #pragma mark FeedDelegate
@@ -124,5 +123,8 @@
     [[self window] makeFirstResponder:r];
     [r release];
     [[self window] close];
+}
+- (void)windowWillClose:(NSNotification *) notification{
+    [[RCFeedsPool sharedPool] launchAll];    
 }
 @end

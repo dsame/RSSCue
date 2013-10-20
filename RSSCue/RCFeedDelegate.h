@@ -12,6 +12,5 @@
 @protocol RCFeedDelegate
 - (void) feedFailed:(RCFeed *) feed;
 - (void) feedSuccess:(RCFeed *) feed;
-@optional
 - (void) feedStateChanged:(RCFeed *) feed;
 @end
