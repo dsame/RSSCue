@@ -10,39 +10,63 @@
 
 
 typedef enum {
-	kNothingMet = 1,
-	kHeaderMet = 2,
-	kItemMet = 3
-} METS;
-
-typedef enum {
+    kNoWait=0,
 	kWaitForTitle=1,
 	kWaitForDescription=2,
-	kWaitForLink=3
+	kWaitForLink=3,
+    kWaitForDate=4
 } WAITS;
 
 @implementation RCFeed
-@synthesize url=_url;
 @synthesize link=_link;
 @synthesize title=_title;
 @synthesize description=_description;
 @synthesize items=_items;
+@synthesize delegate=_delegate;
+@synthesize error=_error;
+@synthesize state=_state;
+@synthesize effectiveURL=_effectiveURL;
+
+#pragma mark utilities and accessros
+
+- (NSString *) type{
+    if (_isAtom) return @"Atom"; else return @"RSS";
+}
+
+- (BOOL) isModified{
+    return _isModified;
+}
+- (BOOL) modified{
+    return _isModified;
+}
 
 #pragma mark Initialization
 
-- (id)initWithURL:(NSURL *)aUrl {
-	self=[self init];
-	self.url=aUrl;
+- (id)initWithConfiguration:(NSDictionary *)config andDelegate:(id<RCFeedDelegate>)delegate{
+	self=[super init];
+    self.delegate=delegate;
+    _state=kUndefined;
 	_responseData = [NSMutableData new];
+    _configuration = [config retain];
 	return self;
-}
-+ (RCFeed *)feedWithURL:(NSURL *)aUrl {
-	return [[RCFeed alloc] initWithURL:aUrl];
 }
 
 - (void)run{
-	NSURLRequest *request = [NSURLRequest requestWithURL:_url];
-	[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];//TODO: segfault?
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[_configuration valueForKey:@"url"]]];
+	NSURLConnection * connection=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];//TODO: segfault?
+    if (connection) {
+        _state=kHTTPsent;
+        [_error release];
+        _error=nil;
+    }else{
+        NSDictionary *userInfo = [[NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"Can not create a connection.",NSLocalizedDescriptionKey,
+                                  nil] autorelease];
+        [_error release];
+        _error=[NSError errorWithDomain:@"RSSCuew" code:_state userInfo:userInfo];
+        _state=kHTTPfail;
+    }
+    [_delegate feedStateChanged:self];
 }
 
 #pragma mark HTTP
@@ -50,36 +74,62 @@ typedef enum {
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     [_responseData setLength:0];
+    _state=kHTTPresposne;
+    [_delegate feedStateChanged:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [_responseData appendData:data];
+    _state=kHTTPdata;
+    [_delegate feedStateChanged:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    //TODO: better handle
-    [[NSAlert alertWithError:error] runModal];
+    [_error release];
+    _error=[error retain];
+    _state=kHTTPfail;
+    [_delegate feedFailed:self];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    _state=kHTTPfinished;
+    [_delegate feedStateChanged:self];
+    
 	NSXMLParser * parser=[[[NSXMLParser alloc] initWithData:_responseData] autorelease];
-    [_newItems release];
-	_newItems=[NSMutableArray arrayWithCapacity:25];
 	[parser setDelegate:self];
 	[parser setShouldResolveExternalEntities:NO];
-	_state=kNothingMet;
+	_state=kParserNothingMet;
+    [_delegate feedStateChanged:self];
 	[parser parse];
+    
+    if (_state!=kParserError){
+    NSError * pe=[parser parserError];
+        if (pe!=nil){
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      @"Feed is invalid",NSLocalizedDescriptionKey,
+                                      [NSString stringWithFormat:@"The feed seems to be broken:\n\n%@",[pe localizedDescription],nil ],NSLocalizedRecoverySuggestionErrorKey,
+                                      nil];
+            _state=kParserError;
+            [_error release];
+            _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];        
+        }
+    }
+
+    if (_state==kHTTPfail || _state==kParserError)
+        [_delegate feedFailed:self];
+    else
+        [_delegate feedSuccess:self];
+    _state=kFinished;
 }
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection
 			 willSendRequest:(NSURLRequest *)request
 			redirectResponse:(NSURLResponse *)redirectResponse
 {
-    [_url autorelease];
-    _url = [[request URL] retain];//handle redirection
+    self.effectiveURL = [request URL];//handle redirection
     return request;
 }
 
@@ -87,16 +137,26 @@ typedef enum {
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
 
-	if (_state==kNothingMet){
+    if (_state==kParserError){
+        return;
+    }else if (_state==kParserNothingMet){
 		if ( [elementName isEqualToString:@"feed"]) {
 			_isAtom=YES;
 		}else if ( [elementName isEqualToString:@"rss"]) {
 			_isAtom=NO;
 		}else {
-			NSAssert(FALSE,@"Strange element \"%@\" has been met. Only feed or rss expected",elementName);
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      @"Feed is invalid",NSLocalizedDescriptionKey,
+                                      [NSString stringWithFormat:@"The proper feed must contatin \"atom\" or \"feed\" as its first elemenet but \"%@\" has been met",elementName,nil ],NSLocalizedRecoverySuggestionErrorKey,
+                                      nil];
+            _state=kParserError;
+            [_error release];
+            _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];
+            return;
 		}
-		_state=kHeaderMet;
-	}else if (_state==kHeaderMet){
+		_state=kParserHeaderMet;
+        [_delegate feedStateChanged:self];
+	}else if (_state==kParserHeaderMet){
 		if ( [elementName isEqualToString:@"title"]) {
 			_waitFor=kWaitForTitle;
 		}else if ( [elementName isEqualToString:@"description"]) {
@@ -104,52 +164,65 @@ typedef enum {
 		}else if ( [elementName isEqualToString:@"link"]) {
 			_waitFor=kWaitForLink;
 		}else if ( [elementName isEqualToString:@"item"]) {
-			if (_state==kItemMet){
-				[_newItems addObject:_item];
-			}
-            [_item release];
+            NSAssert(_newItems==nil,@"_newItems must be nill on parse start");
+            _newItems=[[NSMutableArray arrayWithCapacity:25] retain];
+            _state=kParserItemMet;
 			_item = [RCItem new];
-			_state=kItemMet;
+            [_delegate feedStateChanged:self];                            
 		}
-	}else if (_state==kItemMet){
+	}else if (_state==kParserItemMet){
 		if ( [elementName isEqualToString:@"title"]) {
 			_waitFor=kWaitForTitle;
 		}else if ( [elementName isEqualToString:@"description"]) {
 			_waitFor=kWaitForDescription;
 		}else if ( [elementName isEqualToString:@"link"]) {
 			_waitFor=kWaitForLink;
+		}else if ( [elementName isEqualToString:@"pubDate"]) {
+			_waitFor=kWaitForDate;
+		}else if ( [elementName isEqualToString:@"item"]) {
+            [_newItems addObject:_item];
+            [_item release];
+			_item = [RCItem new];
 		}
 	}else {
-		NSAssert(FALSE,@"Must not happen ever");
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   @"Must never happen",NSLocalizedDescriptionKey,
+                                   nil];
+        _state=kParserError;
+        [_error release];
+        _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];
+
 	}
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-	//NSLog(@"caracters: %@",string);
-	if (_state==kHeaderMet){
+	if (_state==kParserHeaderMet){
 		switch (_waitFor) {
 			case kWaitForTitle:
-				self.title=string;
+				self.title=string;_waitFor=kNoWait;
 				break;
 			case kWaitForDescription:
-				self.description=string;
+				self.description=string;_waitFor=kNoWait;
 				break;
 			case kWaitForLink:
-				self.link=string;				
+				self.link=string;_waitFor=kNoWait;
 				break;
 			default:
 				break;
 		}
-	}else if (_state==kItemMet) {
+	}else if (_state==kParserItemMet) {
 		switch (_waitFor) {
 			case kWaitForTitle:
-				self.title=string;
+				_item.title=string;_waitFor=kNoWait;
 				break;
 			case kWaitForDescription:
-				self.description=string;
+				_item.description=string;_waitFor=kNoWait;
 				break;
 			case kWaitForLink:
-				self.link=string;				
+				_item.link=string;_waitFor=kNoWait;
+				break;
+			case kWaitForDate:
+				_item.date=[NSDate dateWithString:string];_waitFor=kNoWait;
 				break;
 			default:
 				break;
@@ -157,17 +230,48 @@ typedef enum {
 	}
 }
 - (void)parserDidEndDocument:(NSXMLParser *) parser{
-	BOOL isModified=NO;
-	if (_items==nil){
-		isModified=YES;
-	}else {
-		isModified=[_items isEqualToArray:_newItems];
-	}
-	if (isModified) {
+    
+    if (_state==kParserNothingMet) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"Feed is invalid",NSLocalizedDescriptionKey,
+                                  @"Feed seems to be empty",NSLocalizedRecoverySuggestionErrorKey,
+                                  nil];
+        _state=kParserError;
+        [_error release];
+        _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];
+    }
+    
+    if (_state==kParserError){
         [_items release]; 
-		_items=_newItems;
-		_newItems=nil;
-	}
+		_items=nil;
+    }else{
+        if (_items==nil){
+            _items=[_newItems retain];
+        }else {            
+            NSMutableArray *result=[NSMutableArray arrayWithCapacity:[_newItems count]];
+            BOOL exists;
+            for (RCItem *i in _newItems){
+                exists=NO;
+                for (RCItem *ii in _items){
+                    if ([i isSameAs:ii]){
+                        [result addObject:ii];
+                        exists=YES;
+                        break;
+                    }
+                }
+                if (!exists){
+                    [result addObject:i];
+                }
+                
+            }
+            [_items release];
+            _items=[result retain];
+        }
+        _state=kParserFinished;
+        [_delegate feedStateChanged:self];
+    }
+    [_newItems release];
+    _newItems=nil;
 }
 
 @end

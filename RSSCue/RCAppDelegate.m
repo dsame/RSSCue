@@ -8,6 +8,7 @@
 
 #import "RCAppDelegate.h"
 #import "RCPreferencesController.h"
+#import "RCFeedsPool.h"
 
 @implementation RCAppDelegate
 
@@ -23,9 +24,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    NSDictionary *appDefaults = [NSDictionary
-                                 dictionaryWithObjectsAndKeys:@"name",nil,@"img", nil];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    [[RCFeedsPool sharedPool] launchAll];
 }
 
 - (void) awakeFromNib {

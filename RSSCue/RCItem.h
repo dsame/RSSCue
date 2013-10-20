@@ -9,7 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 @interface RCItem : NSObject
+@property (assign) BOOL reported;
 @property (copy) NSString * link;
 @property (copy) NSString * title;
 @property (copy) NSString * description;
+@property (copy) NSDate * date;
+
+-(BOOL) isSameAs:(RCItem*)item;
 @end

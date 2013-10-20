@@ -7,27 +7,49 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "RCFeedDelegate.h"
 #import "RCItem.h"
+
+typedef enum {
+    kUndefined = 0,
+	kParserNothingMet = 1,
+	kParserHeaderMet = 2,
+	kParserItemMet = 3,
+    kParserError = 4,
+    kParserFinished = 5,
+    kHTTPsent = 6,
+    kHTTPresposne = 7,
+    kHTTPdata = 8,
+    kHTTPfail = 9,
+    kHTTPfinished = 10,
+    kFinished = 11
+} RC_FEED_STATE;
 
 
 @interface RCFeed : NSObject<NSXMLParserDelegate> {
+    NSDictionary * _configuration;
 	NSMutableData * _responseData;	
 	BOOL _isAtom;
-	int _state;
+    BOOL _isModified;
+	RC_FEED_STATE _state;
 	int _waitFor;
 	
 	NSMutableArray * _newItems;
 	RCItem * _item;//current
 }
 
-@property (copy) NSURL * url;
 @property (copy) NSString * link;
 @property (copy) NSString * title;
 @property (copy) NSString * description;
-@property (copy) NSArray * items;
+@property (readonly) NSArray * items;
+@property (readonly) NSError * error;
+@property (readonly,assign) BOOL modified;
+@property (retain) id <RCFeedDelegate> delegate;
+@property (assign) RC_FEED_STATE state;
+@property (readonly) NSString *type;
+@property (retain) NSURL* effectiveURL;
 
-- (id) initWithURL:(NSURL *)aUrl;
-+ (RCFeed *) feedWithURL:(NSURL *)aUrl;
+- (id) initWithConfiguration:(NSDictionary *)config andDelegate:(id<RCFeedDelegate>) delegate;
 
 - (void) run;
 

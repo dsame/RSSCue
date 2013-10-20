@@ -18,8 +18,9 @@
 		419ECC37180E77F500B333D2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 419ECC17180E77F500B333D2 /* Cocoa.framework */; };
 		419ECC3F180E77F500B333D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 419ECC3D180E77F500B333D2 /* InfoPlist.strings */; };
 		419ECC42180E77F500B333D2 /* RSSCueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 419ECC41180E77F500B333D2 /* RSSCueTests.m */; };
+		41AC7F711813C05900873307 /* RCFeedsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AC7F701813C05900873307 /* RCFeedsPool.m */; };
 		41CA86851812755F00E715A3 /* RCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CA86821812755F00E715A3 /* RCFeed.m */; };
-		41CA86861812755F00E715A3 /* RCItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CA86841812755F00E715A3 /* RCItem.m */; };
+		41CA868918128E1900E715A3 /* RCItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CA868818128E1900E715A3 /* RCItem.m */; };
 		41CB98E3180EC23D006460D4 /* RCPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CB98E2180EC23D006460D4 /* RCPreferencesController.m */; };
 /* End PBXBuildFile section */
 
@@ -54,10 +55,13 @@
 		419ECC3E180E77F500B333D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		419ECC40180E77F500B333D2 /* RSSCueTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSSCueTests.h; sourceTree = "<group>"; };
 		419ECC41180E77F500B333D2 /* RSSCueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSSCueTests.m; sourceTree = "<group>"; };
+		41AC7F6F1813C05900873307 /* RCFeedsPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeedsPool.h; sourceTree = "<group>"; };
+		41AC7F701813C05900873307 /* RCFeedsPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeedsPool.m; sourceTree = "<group>"; };
 		41CA86811812755F00E715A3 /* RCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeed.h; sourceTree = "<group>"; };
 		41CA86821812755F00E715A3 /* RCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeed.m; sourceTree = "<group>"; };
 		41CA86831812755F00E715A3 /* RCItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCItem.h; sourceTree = "<group>"; };
-		41CA86841812755F00E715A3 /* RCItem.m */ = {isa = PBXFileReference; fileEncoding = 4; path = RCItem.m; sourceTree = "<group>"; };
+		41CA868718128A7E00E715A3 /* RCFeedDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeedDelegate.h; sourceTree = "<group>"; };
+		41CA868818128E1900E715A3 /* RCItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCItem.m; sourceTree = "<group>"; };
 		41CB98E1180EC23D006460D4 /* RCPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPreferencesController.h; sourceTree = "<group>"; };
 		41CB98E2180EC23D006460D4 /* RCPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPreferencesController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -182,7 +186,10 @@
 				41CA86811812755F00E715A3 /* RCFeed.h */,
 				41CA86821812755F00E715A3 /* RCFeed.m */,
 				41CA86831812755F00E715A3 /* RCItem.h */,
-				41CA86841812755F00E715A3 /* RCItem.m */,
+				41CA868818128E1900E715A3 /* RCItem.m */,
+				41CA868718128A7E00E715A3 /* RCFeedDelegate.h */,
+				41AC7F6F1813C05900873307 /* RCFeedsPool.h */,
+				41AC7F701813C05900873307 /* RCFeedsPool.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -300,7 +307,8 @@
 				419ECC2B180E77F500B333D2 /* RCAppDelegate.m in Sources */,
 				41CB98E3180EC23D006460D4 /* RCPreferencesController.m in Sources */,
 				41CA86851812755F00E715A3 /* RCFeed.m in Sources */,
-				41CA86861812755F00E715A3 /* RCItem.m in Sources */,
+				41CA868918128E1900E715A3 /* RCItem.m in Sources */,
+				41AC7F711813C05900873307 /* RCFeedsPool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
