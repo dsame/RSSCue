@@ -50,6 +50,16 @@ static RCFeedsPool * _sharedPool;
     [feed run];
 }
 
+- (RCFeed *)feedForConfiguration:(NSDictionary *)config{
+    NSString *uuid=[config objectForKey:@"uuid"];
+    for (NSTimer * timer in _timers){
+        RCFeed *feed=[[timer userInfo] objectForKey:@"feed"];
+        if ([[feed.configuration objectForKey:@"uuid"] isEqualToString:uuid])
+            return feed;
+    }
+    return nil;
+}
+
 #pragma mark Feed Deligators
 - (void) feedFailed:(RCFeed *) feed{
     NSLog(@"Feed \"%@\" failed with the message: %@(%@)",feed.name,[feed.error localizedDescription],[feed.error localizedRecoverySuggestion]);    

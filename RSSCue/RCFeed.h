@@ -27,7 +27,6 @@ typedef enum {
 
 
 @interface RCFeed : NSObject<NSXMLParserDelegate> {
-    NSDictionary * _configuration;
 	NSMutableData * _responseData;	
 	BOOL _isAtom;
     BOOL _isModified;
@@ -44,6 +43,7 @@ typedef enum {
 @property (readonly) NSArray * items;
 @property (readonly) NSError * error;
 @property (readonly) NSString * name;
+@property (readonly) NSDictionary *configuration;
 @property (readonly,assign) BOOL modified;
 @property (retain) id <RCFeedDelegate> delegate;
 @property (assign) RC_FEED_STATE state;
@@ -53,5 +53,6 @@ typedef enum {
 - (id) initWithConfiguration:(NSDictionary *)config andDelegate:(id<RCFeedDelegate>) delegate;
 
 - (void) run;
+- (void) makeUnreported;
 
 @end

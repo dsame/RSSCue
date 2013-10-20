@@ -73,6 +73,7 @@
     NSInteger button=[sender selectedSegment];
     CFUUIDRef theUUID;
     CFStringRef uuid;
+    RCFeed *f;
     
     switch (button) {
         case 0:
@@ -93,10 +94,17 @@
             break;
         case 2:
             [self.progress startAnimation:self];
-            NSDictionary * config=[[feedsArrayController selectedObjects] objectAtIndex:0];
             [_feed release];
-            _feed=[[[RCFeed alloc] initWithConfiguration:config andDelegate:self] retain];
+            _feed=[[[RCFeed alloc] initWithConfiguration:[[feedsArrayController selectedObjects] objectAtIndex:0] andDelegate:self] retain];
             [_feed run];
+            break;
+        case 3:
+            f=[[[RCFeedsPool sharedPool] feedForConfiguration:[[feedsArrayController selectedObjects] objectAtIndex:0]] retain];
+            [f makeUnreported];
+            NSAlert* alert=[NSAlert alertWithMessageText:@"The feed has been marked as never read" defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@"Number of entries: %u",[f.items count]];
+            [alert runModal];
+            [f release];
+            break;
         default:
             break;
     }

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RCFeed.h"
 #import "RCFeedDelegate.h"
 
 @interface RCFeedsPool : NSObject<RCFeedDelegate> {
@@ -14,4 +15,5 @@
 }
 +(RCFeedsPool*) sharedPool;
 -(void)launchAll;
+-(RCFeed *) feedForConfiguration:(NSDictionary *)config;
 @end

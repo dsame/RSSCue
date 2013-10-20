@@ -26,6 +26,7 @@ typedef enum {
 @synthesize error=_error;
 @synthesize state=_state;
 @synthesize effectiveURL=_effectiveURL;
+@synthesize configuration=_configuration;
 
 #pragma mark utilities and accessros
 
@@ -156,10 +157,14 @@ typedef enum {
             _state=kParserError;
             [_error release];
             _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];
-            return;
+            return; //do not abort parsing in order to call releases on DidEnd
 		}
 		_state=kParserHeaderMet;
         [_delegate feedStateChanged:self];
+        NSAssert(_newItems==nil,@"_newItems must be nill on parse start");
+        NSAssert(_item==nil,@"_item must be nill on parse start");
+        _newItems=[[NSMutableArray arrayWithCapacity:25] retain];
+        _item = [RCItem new];
 	}else if (_state==kParserHeaderMet){
 		if ( [elementName isEqualToString:@"title"]) {
 			_waitFor=kWaitForTitle;
@@ -168,10 +173,7 @@ typedef enum {
 		}else if ( [elementName isEqualToString:@"link"]) {
 			_waitFor=kWaitForLink;
 		}else if ( [elementName isEqualToString:@"item"]) {
-            NSAssert(_newItems==nil,@"_newItems must be nill on parse start");
-            _newItems=[[NSMutableArray arrayWithCapacity:25] retain];
             _state=kParserItemMet;
-			_item = [RCItem new];
             [_delegate feedStateChanged:self];                            
 		}
 	}else if (_state==kParserItemMet){
@@ -276,6 +278,14 @@ typedef enum {
     }
     [_newItems release];
     _newItems=nil;
+    [_item release];
+    _item=nil;
+}
+
+-(void) makeUnreported{
+    for (RCItem* i in _items){
+        i.reported=NO;
+    }
 }
 
 @end
