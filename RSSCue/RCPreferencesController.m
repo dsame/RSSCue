@@ -112,6 +112,8 @@
 
 #pragma mark FeedDelegate
 -(void) feedFailed:(RCFeed *)feed {
+
+    
     [self.progress stopAnimation:self];
     NSAlert* msgBox = [NSAlert alertWithError:feed.error];
     [msgBox runModal];

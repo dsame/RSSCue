@@ -7,7 +7,7 @@
 //
 
 #import "RCFeed.h"
-
+#import "NSString+Filtered.h"
 
 typedef enum {
     kNoWait=0,
@@ -107,10 +107,16 @@ typedef enum {
 	[parser setDelegate:self];
 	[parser setShouldResolveExternalEntities:NO];
 	_state=kParserNothingMet;
+    NSAssert(_newItems==nil,@"_newItems must be nil on parse start");
+    NSAssert(_item==nil,@"_item must be nil on parse start");
+    _newItems=[[NSMutableArray arrayWithCapacity:25] retain];
+    _item = [RCItem new];
+    
     [_delegate feedStateChanged:self];
 	[parser parse];
     
     if (_state!=kParserError){
+        
     NSError * pe=[parser parserError];
         if (pe!=nil){
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -119,7 +125,7 @@ typedef enum {
                                       nil];
             _state=kParserError;
             [_error release];
-            _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];        
+            _error=[[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo] retain];        
         }
     }
 
@@ -127,6 +133,10 @@ typedef enum {
         [_delegate feedFailed:self];
     else
         [_delegate feedSuccess:self];
+    [_newItems release];
+    _newItems=nil;
+    [_item release];
+    _item=nil;    
     _state=kFinished;
 }
 
@@ -141,7 +151,7 @@ typedef enum {
 #pragma mark XML
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
-
+    _inTag=NO;
     if (_state==kParserError){
         return;
     }else if (_state==kParserNothingMet){
@@ -161,35 +171,34 @@ typedef enum {
 		}
 		_state=kParserHeaderMet;
         [_delegate feedStateChanged:self];
-        NSAssert(_newItems==nil,@"_newItems must be nill on parse start");
-        NSAssert(_item==nil,@"_item must be nill on parse start");
-        _newItems=[[NSMutableArray arrayWithCapacity:25] retain];
-        _item = [RCItem new];
+
 	}else if (_state==kParserHeaderMet){
 		if ( [elementName isEqualToString:@"title"]) {
 			_waitFor=kWaitForTitle;
-		}else if ( [elementName isEqualToString:@"description"]) {
+		}else if ( [elementName isEqualToString:@"description"] || [elementName isEqualToString:@"subtitle"]) {
 			_waitFor=kWaitForDescription;
 		}else if ( [elementName isEqualToString:@"link"]) {
 			_waitFor=kWaitForLink;
-		}else if ( [elementName isEqualToString:@"item"]) {
+		}else if ( [elementName isEqualToString:@"item"]|| [elementName isEqualToString:@"entry"]) {
             _state=kParserItemMet;
             [_delegate feedStateChanged:self];                            
 		}
 	}else if (_state==kParserItemMet){
 		if ( [elementName isEqualToString:@"title"]) {
 			_waitFor=kWaitForTitle;
-		}else if ( [elementName isEqualToString:@"description"]) {
+		}else if ( [elementName isEqualToString:@"description"] || [elementName isEqualToString:@"summary"]) {
 			_waitFor=kWaitForDescription;
 		}else if ( [elementName isEqualToString:@"link"]) {
 			_waitFor=kWaitForLink;
-		}else if ( [elementName isEqualToString:@"pubDate"]) {
+		}else if ( [elementName isEqualToString:@"pubDate"] || [elementName isEqualToString:@"updated"]) {
 			_waitFor=kWaitForDate;
-		}else if ( [elementName isEqualToString:@"item"]) {
+		}else if ( [elementName isEqualToString:@"item"]|| [elementName isEqualToString:@"entry"]) {
             [_newItems addObject:_item];
             [_item release];
 			_item = [RCItem new];
-		}
+		}else{
+            _waitFor=kNoWait;
+        }
 	}else {
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                    @"Must never happen",NSLocalizedDescriptionKey,
@@ -199,16 +208,26 @@ typedef enum {
         _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];
 
 	}
+
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    if ([string isEqualToString:@"<"]){
+        _inTag=YES; return;
+    }
+    if ([string isEqualToString:@">"]){
+        _inTag=NO; return;
+    }
+    if (_inTag==YES) {
+        return;
+    };
 	if (_state==kParserHeaderMet){
 		switch (_waitFor) {
 			case kWaitForTitle:
-				self.title=string;_waitFor=kNoWait;
+				self.title=[self.title concatString:[string flatternHTML] withLimit:128];
 				break;
 			case kWaitForDescription:
-				self.description=string;_waitFor=kNoWait;
+				self.description=[self.description concatString:[string flatternHTML] withLimit:256];
 				break;
 			case kWaitForLink:
 				self.link=string;_waitFor=kNoWait;
@@ -219,10 +238,10 @@ typedef enum {
 	}else if (_state==kParserItemMet) {
 		switch (_waitFor) {
 			case kWaitForTitle:
-				_item.title=string;_waitFor=kNoWait;
+				_item.title=[_item.title concatString:[string flatternHTML] withLimit:128];
 				break;
 			case kWaitForDescription:
-				_item.description=string;_waitFor=kNoWait;
+                _item.description=[_item.description concatString:[string flatternHTML] withLimit:200];
 				break;
 			case kWaitForLink:
 				_item.link=string;_waitFor=kNoWait;
@@ -276,10 +295,6 @@ typedef enum {
         _state=kParserFinished;
         [_delegate feedStateChanged:self];
     }
-    [_newItems release];
-    _newItems=nil;
-    [_item release];
-    _item=nil;
 }
 
 -(void) makeUnreported{

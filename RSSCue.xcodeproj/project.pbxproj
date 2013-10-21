@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		413222B7180FE3CF00AF48C3 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 413222B6180FE3CF00AF48C3 /* Preferences.xib */; };
+		4176AAA5181424AD00A079AC /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4176AAA21814244000A079AC /* Growl.framework */; };
+		4176AAA7181424CF00A079AC /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4176AAA21814244000A079AC /* Growl.framework */; };
+		4176AABD1814FCFE00A079AC /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4176AABB1814F56100A079AC /* icon.icns */; };
+		4176AAD218151A9100A079AC /* NSString+Filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = 4176AAD118151A9100A079AC /* NSString+Filtered.m */; };
 		419ECC18180E77F500B333D2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 419ECC17180E77F500B333D2 /* Cocoa.framework */; };
 		419ECC22180E77F500B333D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 419ECC20180E77F500B333D2 /* InfoPlist.strings */; };
 		419ECC24180E77F500B333D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 419ECC23180E77F500B333D2 /* main.m */; };
@@ -19,6 +22,8 @@
 		419ECC3F180E77F500B333D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 419ECC3D180E77F500B333D2 /* InfoPlist.strings */; };
 		419ECC42180E77F500B333D2 /* RSSCueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 419ECC41180E77F500B333D2 /* RSSCueTests.m */; };
 		41AC7F711813C05900873307 /* RCFeedsPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AC7F701813C05900873307 /* RCFeedsPool.m */; };
+		41AC7F751813FAC900873307 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AC7F771813FAC900873307 /* Preferences.xib */; };
+		41AC7F7A1813FB3F00873307 /* Growl Registration Ticket.growlRegDict in Resources */ = {isa = PBXBuildFile; fileRef = 41AC7F791813FB3F00873307 /* Growl Registration Ticket.growlRegDict */; };
 		41CA86851812755F00E715A3 /* RCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CA86821812755F00E715A3 /* RCFeed.m */; };
 		41CA868918128E1900E715A3 /* RCItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CA868818128E1900E715A3 /* RCItem.m */; };
 		41CB98E3180EC23D006460D4 /* RCPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CB98E2180EC23D006460D4 /* RCPreferencesController.m */; };
@@ -34,8 +39,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		4176AAA6181424C400A079AC /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4176AAA7181424CF00A079AC /* Growl.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		413222B6180FE3CF00AF48C3 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		4176AAA21814244000A079AC /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = ../Growl/1.3/Growl.framework; sourceTree = "<group>"; };
+		4176AABB1814F56100A079AC /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		4176AAD018151A9100A079AC /* NSString+Filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Filtered.h"; path = "RSSCue/NSString+Filtered.h"; sourceTree = "<group>"; };
+		4176AAD118151A9100A079AC /* NSString+Filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Filtered.m"; path = "RSSCue/NSString+Filtered.m"; sourceTree = "<group>"; };
 		419ECC13180E77F500B333D2 /* RSSCue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSSCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		419ECC17180E77F500B333D2 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		419ECC1A180E77F500B333D2 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -57,6 +78,8 @@
 		419ECC41180E77F500B333D2 /* RSSCueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSSCueTests.m; sourceTree = "<group>"; };
 		41AC7F6F1813C05900873307 /* RCFeedsPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeedsPool.h; sourceTree = "<group>"; };
 		41AC7F701813C05900873307 /* RCFeedsPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeedsPool.m; sourceTree = "<group>"; };
+		41AC7F761813FAC900873307 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Preferences.xib; sourceTree = "<group>"; };
+		41AC7F791813FB3F00873307 /* Growl Registration Ticket.growlRegDict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Growl Registration Ticket.growlRegDict"; sourceTree = "<group>"; };
 		41CA86811812755F00E715A3 /* RCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeed.h; sourceTree = "<group>"; };
 		41CA86821812755F00E715A3 /* RCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeed.m; sourceTree = "<group>"; };
 		41CA86831812755F00E715A3 /* RCItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCItem.h; sourceTree = "<group>"; };
@@ -72,6 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				419ECC18180E77F500B333D2 /* Cocoa.framework in Frameworks */,
+				4176AAA5181424AD00A079AC /* Growl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,16 +114,27 @@
 		413222B2180FC79700AF48C3 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				413222B6180FE3CF00AF48C3 /* Preferences.xib */,
+				41AC7F771813FAC900873307 /* Preferences.xib */,
 				41CB98E1180EC23D006460D4 /* RCPreferencesController.h */,
 				41CB98E2180EC23D006460D4 /* RCPreferencesController.m */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
 		};
+		4176AAC41815175700A079AC /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				4176AAD018151A9100A079AC /* NSString+Filtered.h */,
+				4176AAD118151A9100A079AC /* NSString+Filtered.m */,
+			);
+			name = Utilities;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		419ECC08180E77F500B333D2 = {
 			isa = PBXGroup;
 			children = (
+				4176AABB1814F56100A079AC /* icon.icns */,
 				419ECC1D180E77F500B333D2 /* RSSCue */,
 				419ECC3A180E77F500B333D2 /* RSSCueTests */,
 				419ECC16180E77F500B333D2 /* Frameworks */,
@@ -119,6 +154,7 @@
 		419ECC16180E77F500B333D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				41AC7F781813FB2100873307 /* Growl */,
 				419ECC17180E77F500B333D2 /* Cocoa.framework */,
 				419ECC35180E77F500B333D2 /* SenTestingKit.framework */,
 				419ECC19180E77F500B333D2 /* Other Frameworks */,
@@ -139,7 +175,8 @@
 		419ECC1D180E77F500B333D2 /* RSSCue */ = {
 			isa = PBXGroup;
 			children = (
-				41CA867C1811B52100E715A3 /* Model */,
+				4176AAC41815175700A079AC /* Utilities */,
+				41CA867C1811B52100E715A3 /* Feeds */,
 				419ECC29180E77F500B333D2 /* RCAppDelegate.h */,
 				419ECC2A180E77F500B333D2 /* RCAppDelegate.m */,
 				419ECC2C180E77F500B333D2 /* MainMenu.xib */,
@@ -180,7 +217,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		41CA867C1811B52100E715A3 /* Model */ = {
+		41AC7F781813FB2100873307 /* Growl */ = {
+			isa = PBXGroup;
+			children = (
+				4176AAA21814244000A079AC /* Growl.framework */,
+				41AC7F791813FB3F00873307 /* Growl Registration Ticket.growlRegDict */,
+			);
+			name = Growl;
+			path = RSSCue;
+			sourceTree = "<group>";
+		};
+		41CA867C1811B52100E715A3 /* Feeds */ = {
 			isa = PBXGroup;
 			children = (
 				41CA86811812755F00E715A3 /* RCFeed.h */,
@@ -191,7 +238,7 @@
 				41AC7F6F1813C05900873307 /* RCFeedsPool.h */,
 				41AC7F701813C05900873307 /* RCFeedsPool.m */,
 			);
-			name = Model;
+			name = Feeds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -204,6 +251,7 @@
 				419ECC0F180E77F500B333D2 /* Sources */,
 				419ECC10180E77F500B333D2 /* Frameworks */,
 				419ECC11180E77F500B333D2 /* Resources */,
+				4176AAA6181424C400A079AC /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -268,7 +316,9 @@
 				419ECC22180E77F500B333D2 /* InfoPlist.strings in Resources */,
 				419ECC28180E77F500B333D2 /* Credits.rtf in Resources */,
 				419ECC2E180E77F500B333D2 /* MainMenu.xib in Resources */,
-				413222B7180FE3CF00AF48C3 /* Preferences.xib in Resources */,
+				41AC7F751813FAC900873307 /* Preferences.xib in Resources */,
+				41AC7F7A1813FB3F00873307 /* Growl Registration Ticket.growlRegDict in Resources */,
+				4176AABD1814FCFE00A079AC /* icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,6 +359,7 @@
 				41CA86851812755F00E715A3 /* RCFeed.m in Sources */,
 				41CA868918128E1900E715A3 /* RCItem.m in Sources */,
 				41AC7F711813C05900873307 /* RCFeedsPool.m in Sources */,
+				4176AAD218151A9100A079AC /* NSString+Filtered.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +414,14 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		41AC7F771813FAC900873307 /* Preferences.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				41AC7F761813FAC900873307 /* en */,
+			);
+			name = Preferences.xib;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -414,9 +473,14 @@
 		419ECC46180E77F500B333D2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Growl/1.3\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RSSCue/RSSCue-Prefix.pch";
 				INFOPLIST_FILE = "RSSCue/RSSCue-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -425,9 +489,14 @@
 		419ECC47180E77F500B333D2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Growl/1.3\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RSSCue/RSSCue-Prefix.pch";
 				INFOPLIST_FILE = "RSSCue/RSSCue-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

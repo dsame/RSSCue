@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface RCItem : NSObject
-@property (assign) BOOL reported;
+@property (assign,getter = isReported) BOOL reported;
 @property (copy) NSString * link;
 @property (copy) NSString * title;
 @property (copy) NSString * description;

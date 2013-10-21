@@ -8,6 +8,7 @@
 
 #import "RCFeedsPool.h"
 #import "RCFeed.h"
+#import <Growl/Growl.h>
 
 @implementation RCFeedsPool
 static RCFeedsPool * _sharedPool;
@@ -25,11 +26,15 @@ static RCFeedsPool * _sharedPool;
 }
 
 -(void)launchAll{
+    for (NSTimer *timer in _timers) [timer invalidate];
     [_timers release];
     NSArray *configs=[[NSUserDefaults standardUserDefaults] arrayForKey:@"feeds"];
     _timers=[[NSMutableArray alloc] initWithCapacity:[configs count]];
     NSLog(@"Timers will be respawned for %lu feeds",[configs count]);
     for (NSDictionary* config in configs){
+        if (NO==[[config valueForKey:@"enabled"] boolValue]) {
+            continue;
+        }
         RCFeed* feed=[[[RCFeed alloc] initWithConfiguration:config andDelegate:self] autorelease];
         NSLog(@"Feed %@ started",feed.name);
         [feed run];
@@ -62,10 +67,32 @@ static RCFeedsPool * _sharedPool;
 
 #pragma mark Feed Deligators
 - (void) feedFailed:(RCFeed *) feed{
+
+    
     NSLog(@"Feed \"%@\" failed with the message: %@(%@)",feed.name,[feed.error localizedDescription],[feed.error localizedRecoverySuggestion]);    
 }
 - (void) feedSuccess:(RCFeed *) feed{
     NSLog(@"Feed \"%@\" success",feed.name);
+    
+    int repc=0;
+    int max=[[feed.configuration objectForKey:@"max"] intValue];
+    for(RCItem * i in feed.items){
+        if (!i.isReported){
+            [GrowlApplicationBridge notifyWithTitle:i.title
+                                        description:[NSString stringWithFormat:@"%@",i.description]
+                                   notificationName:@"ItemArrived"
+                                           iconData:nil
+                                           priority:0
+                                           isSticky:NO
+                                       clickContext:nil];
+            i.reported=YES;
+            repc=repc+1;
+            if (repc>=max){
+                NSLog(@"Feed \"%@\" exceeded number of max allowed entries, some will be skipped",feed.title);
+                break;
+            }
+        }
+    }
 }
 - (void) feedStateChanged:(RCFeed *) feed{
 }

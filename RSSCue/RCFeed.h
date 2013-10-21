@@ -30,6 +30,7 @@ typedef enum {
 	NSMutableData * _responseData;	
 	BOOL _isAtom;
     BOOL _isModified;
+    BOOL _inTag;
 	RC_FEED_STATE _state;
 	int _waitFor;
 	
