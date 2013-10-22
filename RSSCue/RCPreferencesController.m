@@ -16,6 +16,8 @@
 @synthesize fieldPassword;
 @synthesize stepperInterval;
 @synthesize stepperMax;
+@synthesize fieldInterval;
+@synthesize checkboxEnabled;
 @synthesize progress;
 @synthesize info;
 
@@ -112,13 +114,7 @@
 }
 - (void) awakeFromNib {
     [feedsArrayController addObserver:self forKeyPath:@"selection" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
-   /*
-    [feedsArrayController addObserver:self forKeyPath:@"selection.interval" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
-    [feedsArrayController addObserver:self forKeyPath:@"selection.url" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
-    [feedsArrayController addObserver:self forKeyPath:@"selection.enabled" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];*/
-    [feedsArrayController addObserver:self forKeyPath:@"login" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
-    [feedsArrayController addObserver:self forKeyPath:@"password" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
-    
+
     [self setControlsEnabled];
     [self updateInfoText];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -141,8 +137,22 @@
         NSString* uuid=[[self selectedConfig] objectForKey:@"uuid"];
         [[RCFeedsPool sharedPool] restartFeedByUUID:uuid];
     }
-//    NSLog(@"%@",[[aNotification userInfo] valueForKey:@"NSFieldEditor"] );
 }
+
+- (IBAction)stepperChanged:(id)sender {
+    NSString* uuid=[[self selectedConfig] objectForKey:@"uuid"];
+    [[RCFeedsPool sharedPool] restartFeedByUUID:uuid];
+}
+
+- (IBAction)enableFeed:(id)sender {
+    NSString* uuid=[[self selectedConfig] objectForKey:@"uuid"];
+    if ([self.checkboxEnabled state]==NSOnState )
+        [[RCFeedsPool sharedPool] addFeedByUUID:uuid];
+    else
+        [[RCFeedsPool sharedPool] removeFeedByUUID:uuid];
+    [self setControlsEnabled];
+}
+
 
 #pragma mark *** Buttons ***
 - (IBAction)addRemoveFeed:(id)sender {
@@ -238,5 +248,6 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     //[[RCFeedsPool sharedPool] launchAll];    
 }
+
 
 @end

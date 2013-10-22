@@ -30,5 +30,10 @@
 @property (assign) IBOutlet NSTextField *fieldPassword;
 @property (assign) IBOutlet NSStepper *stepperInterval;
 @property (assign) IBOutlet NSStepper *stepperMax;
+@property (assign) IBOutlet NSTextField *fieldInterval;
+@property (assign) IBOutlet NSButton *checkboxEnabled;
+
+- (IBAction)stepperChanged:(id)sender;
+- (IBAction)enableFeed:(id)sender;
 
 @end
