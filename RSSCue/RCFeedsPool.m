@@ -26,15 +26,7 @@ static RCFeedsPool * _sharedPool;
     return _sharedPool;
 }
 
--(void) addFeedByConfig:(NSDictionary *)config {
-    if (NO==[[config valueForKey:@"enabled"] boolValue]) {
-        return;
-    }
-    NSString *uuid=[config valueForKey:@"uuid"];
-    NSAssert(uuid!=nil, @"UUID must not be nill\n%@", config);
-    RCFeed* feed=[[[RCFeed alloc] initWithUUID:uuid andDelegate:self] autorelease];
-    NSLog(@"Feed %@ started",feed.name);
-    [feed run];
+-(void) addFeed:(RCFeed *)feed withConfig:(NSDictionary *)config {
     NSTimeInterval interval=[[config objectForKey:@"interval"] doubleValue];
     if (interval<10) interval=10; //precaution
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:interval
@@ -42,7 +34,20 @@ static RCFeedsPool * _sharedPool;
                                                     selector:@selector(runFeed:)
                                                     userInfo:[NSDictionary dictionaryWithObject:feed forKey:@"feed"] 
                                                      repeats:YES];
-    [_timers setObject:timer forKey:uuid];
+    [_timers setObject:timer forKey:feed.uuid];
+    NSLog(@"Feed %@ added to the schedule",feed.name);
+};
+
+-(void) addFeedByConfig:(NSDictionary *)config {
+    if (NO==[[config valueForKey:@"enabled"] boolValue]) {
+        return;
+    }
+    NSString *uuid=[config valueForKey:@"uuid"];
+    NSAssert(uuid!=nil, @"UUID must not be nill\n%@", config);
+    RCFeed* feed=[[[RCFeed alloc] initWithUUID:uuid andDelegate:self] autorelease];
+ 
+    [feed run];
+    [self addFeed:feed withConfig:config];
 };
 
 -(void) addFeedByUUID:(NSString*)uuid {
@@ -56,13 +61,17 @@ static RCFeedsPool * _sharedPool;
     RCFeed *feed=[[[timer userInfo] objectForKey:@"feed"] retain];
     [timer invalidate];
     [_timers removeObjectForKey:uuid];
-    NSLog(@"Feed %@ removed",feed.name);
+    NSLog(@"Feed %@ removed from the schedule",feed.name);
     [feed release];
 };
 
--(void) updateFeedByUUID:(NSString*)uuid{
+-(void) restartFeedByUUID:(NSString*)uuid{
+    RCFeed *feed=[[self feedForUUID:uuid] retain];
+    NSDictionary * config=[NSUserDefaults configForFeedByUUID:uuid];
+    NSAssert(config!=nil, @"Attempt to add a feed with no configuraiton, uuid=%@",uuid);
     [self removeFeedByUUID:uuid];
-    [self addFeedByUUID:uuid];
+    [self addFeed:feed withConfig:config];
+    [feed release];
 }
 
 -(void)launchAll{

@@ -11,13 +11,27 @@
 #import "NSUserDefaults+FeedConfig.h"
 
 @implementation RCPreferencesController
+@synthesize fieldURL;
+@synthesize fieldLogin;
+@synthesize fieldPassword;
+@synthesize stepperInterval;
+@synthesize stepperMax;
 @synthesize progress;
 @synthesize info;
+
+@synthesize login;
+@synthesize password;
 
 @synthesize feedsArrayController;
 @synthesize buttons=_buttons;
 
 #pragma mark utilities 
+- (NSDictionary *)selectedConfig{
+    NSArray * selection=[feedsArrayController selectedObjects];
+    NSDictionary * config=[selection count]>0?[selection objectAtIndex:0]:nil;
+    return config;
+}
+
 - (void) setControlsEnabled {
     unsigned long c=[[feedsArrayController selectedObjects] count];
     [self.buttons setEnabled:c>0 forSegment:1];
@@ -75,6 +89,9 @@
     [self.info setStringValue:[NSString stringWithFormat:@"%@\nURL: %@\nTotal number of entries: %@\nNumber of shown entries: %@\nLast fetch: %@\n%@",title,link,total,reported, lastFetchTxt,summary]];
 }
 
+- (IBAction)restartSelectedFeed:(id)sender {
+}
+
 
 
 #pragma mark Initialization
@@ -95,6 +112,13 @@
 }
 - (void) awakeFromNib {
     [feedsArrayController addObserver:self forKeyPath:@"selection" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
+   /*
+    [feedsArrayController addObserver:self forKeyPath:@"selection.interval" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
+    [feedsArrayController addObserver:self forKeyPath:@"selection.url" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
+    [feedsArrayController addObserver:self forKeyPath:@"selection.enabled" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];*/
+    [feedsArrayController addObserver:self forKeyPath:@"login" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
+    [feedsArrayController addObserver:self forKeyPath:@"password" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
+    
     [self setControlsEnabled];
     [self updateInfoText];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -102,13 +126,22 @@
                                                  name:@"feedUpdate" object:nil];
 }
 
-#pragma mark Controls observers
+#pragma mark Controls observers & delegators
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"selection"]){
         [self setControlsEnabled];
         [self updateInfoText];
     }
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)aNotification {
+    NSTextField* f=[aNotification object];
+    if (f==self.fieldLogin||f==self.fieldURL||f==self.fieldPassword){
+        NSString* uuid=[[self selectedConfig] objectForKey:@"uuid"];
+        [[RCFeedsPool sharedPool] restartFeedByUUID:uuid];
+    }
+//    NSLog(@"%@",[[aNotification userInfo] valueForKey:@"NSFieldEditor"] );
 }
 
 #pragma mark *** Buttons ***

@@ -17,9 +17,18 @@
 @property (assign) IBOutlet NSSegmentedControl *buttons;
 @property (assign) IBOutlet NSTextField *info;
 @property (assign) IBOutlet NSProgressIndicator *progress;
+@property (retain) NSString* login;
+@property (retain) NSString* password;
 
 - (IBAction)addRemoveFeed:(id)sender;
 - (IBAction)save:(id)sender;
-- (void) updateInfoText;
+
+- (void)controlTextDidEndEditing:(NSNotification *)aNotification;
+
+@property (assign) IBOutlet NSTextField *fieldURL;
+@property (assign) IBOutlet NSTextField *fieldLogin;
+@property (assign) IBOutlet NSTextField *fieldPassword;
+@property (assign) IBOutlet NSStepper *stepperInterval;
+@property (assign) IBOutlet NSStepper *stepperMax;
 
 @end

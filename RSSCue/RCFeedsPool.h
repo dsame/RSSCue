@@ -18,5 +18,5 @@
 -(RCFeed *) feedForUUID:(NSString *)uuid;
 -(void) addFeedByUUID:(NSString*)uuid;
 -(void) removeFeedByUUID:(NSString*)uuid;
--(void) updateFeedByUUID:(NSString*)uuid;
+-(void) restartFeedByUUID:(NSString*)uuid;
 @end
