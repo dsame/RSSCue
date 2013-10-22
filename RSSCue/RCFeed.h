@@ -11,25 +11,25 @@
 #import "RCItem.h"
 
 typedef enum {
-    kUndefined = 0,
-	kParserNothingMet = 1,
-	kParserHeaderMet = 2,
-	kParserItemMet = 3,
-    kParserError = 4,
-    kParserFinished = 5,
-    kHTTPsent = 6,
-    kHTTPresposne = 7,
-    kHTTPdata = 8,
-    kHTTPfail = 9,
-    kHTTPfinished = 10,
-    kFinished = 11
+    kUndefined,
+	kParserNothingMet,
+	kParserHeaderMet,
+	kParserImageMet,
+	kParserItemMet,
+    kParserError,
+    kParserFinished,
+    kHTTPsent,
+    kHTTPresposne,
+    kHTTPdata,
+    kHTTPfail,
+    kHTTPfinished,
+    kFinished
 } RC_FEED_STATE;
 
 
 @interface RCFeed : NSObject<NSXMLParserDelegate> {
 	NSMutableData * _responseData;	
 	BOOL _isAtom;
-    BOOL _isModified;
     BOOL _inTag;
 	RC_FEED_STATE _state;
 	int _waitFor;
@@ -41,19 +41,21 @@ typedef enum {
 @property (copy) NSString * link;
 @property (copy) NSString * title;
 @property (copy) NSString * description;
+@property (assign) unsigned int reported;
+
 @property (readonly) NSArray * items;
 @property (readonly) NSError * error;
 @property (readonly) NSString * name;
-@property (readonly) NSDictionary *configuration;
-@property (readonly,assign) BOOL modified;
+@property (readonly) NSString * uuid;
 @property (retain) id <RCFeedDelegate> delegate;
 @property (assign) RC_FEED_STATE state;
 @property (readonly) NSString *type;
 @property (retain) NSURL* effectiveURL;
 
-- (id) initWithConfiguration:(NSDictionary *)config andDelegate:(id<RCFeedDelegate>) delegate;
+- (id) initWithUUID:(NSString *)uuid andDelegate:(id<RCFeedDelegate>) delegate;
 
 - (void) run;
 - (void) makeUnreported;
 
+- (NSMutableDictionary*) configuration;
 @end

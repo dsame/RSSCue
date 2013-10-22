@@ -11,9 +11,12 @@
 #import "RCFeedDelegate.h"
 
 @interface RCFeedsPool : NSObject<RCFeedDelegate> {
-    NSMutableArray* _timers;
+    NSMutableDictionary* _timers;
 }
 +(RCFeedsPool*) sharedPool;
 -(void)launchAll;
--(RCFeed *) feedForConfiguration:(NSDictionary *)config;
+-(RCFeed *) feedForUUID:(NSString *)uuid;
+-(void) addFeedByUUID:(NSString*)uuid;
+-(void) removeFeedByUUID:(NSString*)uuid;
+-(void) updateFeedByUUID:(NSString*)uuid;
 @end

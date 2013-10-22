@@ -17,15 +17,15 @@
 @synthesize description=_description;
 @synthesize date=_date;
 
+-(id) init{
+    self=[super init];
+    self.title=@"";
+    self.description=@"";
+    return self;
+}
 
 -(BOOL) isSameAs:(RCItem*)item{
     return [self.title isEqualToString:item.title] && [self.description isEqualToString:item.description] && [self.link isEqualToString:item.link];
 };
--(RCItem*) init{
-    self=[super init];
-    self.description=@"";
-    self.title=@"";
-    return self;
-}
 @end
 

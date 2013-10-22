@@ -11,6 +11,8 @@
 		4176AAA7181424CF00A079AC /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4176AAA21814244000A079AC /* Growl.framework */; };
 		4176AABD1814FCFE00A079AC /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4176AABB1814F56100A079AC /* icon.icns */; };
 		4176AAD218151A9100A079AC /* NSString+Filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = 4176AAD118151A9100A079AC /* NSString+Filtered.m */; };
+		4176AAD918157BCD00A079AC /* RSS-status-item.png in Resources */ = {isa = PBXBuildFile; fileRef = 4176AAD818157BCD00A079AC /* RSS-status-item.png */; };
+		4176AADC1815990000A079AC /* NSUserDefaults+FeedConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4176AADB1815990000A079AC /* NSUserDefaults+FeedConfig.m */; };
 		419ECC18180E77F500B333D2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 419ECC17180E77F500B333D2 /* Cocoa.framework */; };
 		419ECC22180E77F500B333D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 419ECC20180E77F500B333D2 /* InfoPlist.strings */; };
 		419ECC24180E77F500B333D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 419ECC23180E77F500B333D2 /* main.m */; };
@@ -54,9 +56,12 @@
 
 /* Begin PBXFileReference section */
 		4176AAA21814244000A079AC /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = ../Growl/1.3/Growl.framework; sourceTree = "<group>"; };
-		4176AABB1814F56100A079AC /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		4176AABB1814F56100A079AC /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = ../icon.icns; sourceTree = "<group>"; };
 		4176AAD018151A9100A079AC /* NSString+Filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Filtered.h"; path = "RSSCue/NSString+Filtered.h"; sourceTree = "<group>"; };
 		4176AAD118151A9100A079AC /* NSString+Filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Filtered.m"; path = "RSSCue/NSString+Filtered.m"; sourceTree = "<group>"; };
+		4176AAD818157BCD00A079AC /* RSS-status-item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RSS-status-item.png"; sourceTree = "<group>"; };
+		4176AADA1815990000A079AC /* NSUserDefaults+FeedConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+FeedConfig.h"; path = "RSSCue/NSUserDefaults+FeedConfig.h"; sourceTree = "<group>"; };
+		4176AADB1815990000A079AC /* NSUserDefaults+FeedConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+FeedConfig.m"; path = "RSSCue/NSUserDefaults+FeedConfig.m"; sourceTree = "<group>"; };
 		419ECC13180E77F500B333D2 /* RSSCue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSSCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		419ECC17180E77F500B333D2 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		419ECC1A180E77F500B333D2 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -126,6 +131,8 @@
 			children = (
 				4176AAD018151A9100A079AC /* NSString+Filtered.h */,
 				4176AAD118151A9100A079AC /* NSString+Filtered.m */,
+				4176AADA1815990000A079AC /* NSUserDefaults+FeedConfig.h */,
+				4176AADB1815990000A079AC /* NSUserDefaults+FeedConfig.m */,
 			);
 			name = Utilities;
 			path = ..;
@@ -134,7 +141,6 @@
 		419ECC08180E77F500B333D2 = {
 			isa = PBXGroup;
 			children = (
-				4176AABB1814F56100A079AC /* icon.icns */,
 				419ECC1D180E77F500B333D2 /* RSSCue */,
 				419ECC3A180E77F500B333D2 /* RSSCueTests */,
 				419ECC16180E77F500B333D2 /* Frameworks */,
@@ -189,6 +195,8 @@
 		419ECC1E180E77F500B333D2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4176AAD818157BCD00A079AC /* RSS-status-item.png */,
+				4176AABB1814F56100A079AC /* icon.icns */,
 				419ECC1F180E77F500B333D2 /* RSSCue-Info.plist */,
 				419ECC20180E77F500B333D2 /* InfoPlist.strings */,
 				419ECC23180E77F500B333D2 /* main.m */,
@@ -319,6 +327,7 @@
 				41AC7F751813FAC900873307 /* Preferences.xib in Resources */,
 				41AC7F7A1813FB3F00873307 /* Growl Registration Ticket.growlRegDict in Resources */,
 				4176AABD1814FCFE00A079AC /* icon.icns in Resources */,
+				4176AAD918157BCD00A079AC /* RSS-status-item.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +369,7 @@
 				41CA868918128E1900E715A3 /* RCItem.m in Sources */,
 				41AC7F711813C05900873307 /* RCFeedsPool.m in Sources */,
 				4176AAD218151A9100A079AC /* NSString+Filtered.m in Sources */,
+				4176AADC1815990000A079AC /* NSUserDefaults+FeedConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

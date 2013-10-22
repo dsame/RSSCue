@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 @class RCFeed;
 
-@protocol RCFeedDelegate
+@protocol RCFeedDelegate <NSObject>
 - (void) feedFailed:(RCFeed *) feed;
 - (void) feedSuccess:(RCFeed *) feed;
 - (void) feedStateChanged:(RCFeed *) feed;

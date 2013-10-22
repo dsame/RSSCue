@@ -28,9 +28,9 @@
 }
 
 - (void) awakeFromNib {
-	_statusItem = [[[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] retain]; 
+	_statusItem = [[[NSStatusBar systemStatusBar] statusItemWithLength:16] retain]; 
 	[_statusItem setMenu:_statusMenu];
-	[_statusItem setTitle:@"RSS Cue"];
+	[_statusItem setImage:[[[NSImage alloc] initByReferencingFile:[[NSBundle mainBundle] pathForResource:@"RSS-status-item" ofType:@"png"]] autorelease]];
 	[_statusItem setHighlightMode:YES];
 }
 
@@ -44,7 +44,7 @@
         
     }
     [_preferencesPanelController showWindow:self];
-    [[_preferencesPanelController window] makeKeyAndOrderFront:self];
+    //[[_preferencesPanelController window] makeKeyAndOrderFront:self];
 }
 
 @end

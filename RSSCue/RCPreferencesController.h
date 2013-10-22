@@ -12,6 +12,7 @@
 @interface RCPreferencesController : NSWindowController <RCFeedDelegate> {
     RCFeed * _feed;
 }
+
 @property (assign) IBOutlet NSArrayController *feedsArrayController;
 @property (assign) IBOutlet NSSegmentedControl *buttons;
 @property (assign) IBOutlet NSTextField *info;
@@ -19,5 +20,6 @@
 
 - (IBAction)addRemoveFeed:(id)sender;
 - (IBAction)save:(id)sender;
+- (void) updateInfoText;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "RCFeed.h"
 #import "NSString+Filtered.h"
+#import "NSUserDefaults+FeedConfig.h"
 
 typedef enum {
     kNoWait=0,
@@ -20,13 +21,14 @@ typedef enum {
 @implementation RCFeed
 @synthesize link=_link;
 @synthesize title=_title;
+@synthesize uuid=_uuid;
 @synthesize description=_description;
 @synthesize items=_items;
 @synthesize delegate=_delegate;
 @synthesize error=_error;
 @synthesize state=_state;
 @synthesize effectiveURL=_effectiveURL;
-@synthesize configuration=_configuration;
+@synthesize reported=_reported;
 
 #pragma mark utilities and accessros
 
@@ -34,30 +36,33 @@ typedef enum {
     if (_isAtom) return @"Atom"; else return @"RSS";
 }
 
-- (BOOL) isModified{
-    return _isModified;
-}
-- (BOOL) modified{
-    return _isModified;
+- (NSMutableDictionary*) configuration{
+    NSMutableDictionary* c=[NSUserDefaults configForFeedByUUID:_uuid];
+    NSAssert(c!=nil, @"There's no config for UUID=%@", _uuid);
+    return c;
 }
 
 - (NSString *) name{
-    return [_configuration objectForKey:@"name"];
+    return [self.configuration objectForKey:@"name"];
 }
+
 
 #pragma mark Initialization
 
-- (id)initWithConfiguration:(NSDictionary *)config andDelegate:(id<RCFeedDelegate>)delegate{
+- (id)initWithUUID:(NSString *)uuid andDelegate:(id<RCFeedDelegate>)delegate{
 	self=[super init];
+    self.title=@"";
+    self.description=@"";
     self.delegate=delegate;
+    _uuid=[uuid retain];
     _state=kUndefined;
 	_responseData = [NSMutableData new];
-    _configuration = [config retain];
 	return self;
 }
 
 - (void)run{
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[_configuration valueForKey:@"url"]]];
+    NSDictionary * configuration=[self configuration];
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[configuration valueForKey:@"url"]]];
 	NSURLConnection * connection=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];//TODO: segfault?
     if (connection) {
         _state=kHTTPsent;
@@ -68,7 +73,7 @@ typedef enum {
                                   @"Can not create a connection.",NSLocalizedDescriptionKey,
                                   nil] autorelease];
         [_error release];
-        _error=[NSError errorWithDomain:@"RSSCuew" code:_state userInfo:userInfo];
+        _error=[[NSError errorWithDomain:@"RSSCuew" code:_state userInfo:userInfo] retain];
         _state=kHTTPfail;
     }
     [_delegate feedStateChanged:self];
@@ -111,6 +116,8 @@ typedef enum {
     NSAssert(_item==nil,@"_item must be nil on parse start");
     _newItems=[[NSMutableArray arrayWithCapacity:25] retain];
     _item = [RCItem new];
+    self.description=@"";
+    self.title=@"";
     
     [_delegate feedStateChanged:self];
 	[parser parse];
@@ -166,7 +173,7 @@ typedef enum {
                                       nil];
             _state=kParserError;
             [_error release];
-            _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];
+            _error=[[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo] retain];
             return; //do not abort parsing in order to call releases on DidEnd
 		}
 		_state=kParserHeaderMet;
@@ -179,6 +186,8 @@ typedef enum {
 			_waitFor=kWaitForDescription;
 		}else if ( [elementName isEqualToString:@"link"]) {
 			_waitFor=kWaitForLink;
+		}else if ( [elementName isEqualToString:@"image"]) {
+			_state=kParserImageMet;
 		}else if ( [elementName isEqualToString:@"item"]|| [elementName isEqualToString:@"entry"]) {
             _state=kParserItemMet;
             [_delegate feedStateChanged:self];                            
@@ -199,13 +208,18 @@ typedef enum {
 		}else{
             _waitFor=kNoWait;
         }
+    }else if (_state==kParserImageMet){
+        if ( [elementName isEqualToString:@"item"]|| [elementName isEqualToString:@"entry"]) {
+            _state=kParserItemMet;
+            [_delegate feedStateChanged:self];                            
+		}
 	}else {
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                    @"Must never happen",NSLocalizedDescriptionKey,
                                    nil];
         _state=kParserError;
         [_error release];
-        _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];
+        _error=[[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo] retain];
 
 	}
 
@@ -263,7 +277,7 @@ typedef enum {
                                   nil];
         _state=kParserError;
         [_error release];
-        _error=[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo];
+        _error=[[NSError errorWithDomain:@"RSSCue" code:_state userInfo:userInfo] retain];
     }
     
     if (_state==kParserError){
