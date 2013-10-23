@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <Growl/Growl.h>
 
+
 @interface RCAppDelegate : NSObject <NSApplicationDelegate, GrowlApplicationBridgeDelegate> {
     NSWindowController *_preferencesPanelController;
     NSStatusItem * _statusItem;
