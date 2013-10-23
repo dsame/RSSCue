@@ -24,16 +24,30 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    /*
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"showMenu"] intValue]==1){
+        [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+    }*/
+    [GrowlApplicationBridge setGrowlDelegate:self];
     [[RCFeedsPool sharedPool] launchAll];
 }
-
+- (void) growlNotificationWasClicked:(id)clickContext{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:clickContext]];
+};
 - (void) awakeFromNib {
-	_statusItem = [[[NSStatusBar systemStatusBar] statusItemWithLength:16] retain]; 
-	[_statusItem setMenu:_statusMenu];
-	[_statusItem setImage:[[[NSImage alloc] initByReferencingFile:[[NSBundle mainBundle] pathForResource:@"RSS-status-item" ofType:@"png"]] autorelease]];
-	[_statusItem setHighlightMode:YES];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"showMenu"] intValue]==1){
+        _statusItem = [[[NSStatusBar systemStatusBar] statusItemWithLength:16] retain]; 
+        [_statusItem setMenu:_statusMenu];
+        [_statusItem setImage:[[[NSImage alloc] initByReferencingFile:[[NSBundle mainBundle] pathForResource:@"RSS-status-item" ofType:@"png"]] autorelease]];
+        [_statusItem setHighlightMode:YES];
+    }else{
+        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+    }
 }
-
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag{
+    [self showPreferencesPanel:self];
+    return NO;
+}
 #pragma mark *** Preferences ***
 - (IBAction)showPreferencesPanel:(id)sender {
     if (!_preferencesPanelController) {
@@ -44,7 +58,7 @@
         
     }
     [_preferencesPanelController showWindow:self];
-    //[[_preferencesPanelController window] makeKeyAndOrderFront:self];
+    [[_preferencesPanelController window] makeKeyAndOrderFront:self];
 }
 
 @end

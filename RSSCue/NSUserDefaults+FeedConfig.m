@@ -32,10 +32,13 @@
             [config setValue:feed.description forKey:@"description"];
             [config setValue:[NSDate date] forKey:@"lastFetch"];
             [configs replaceObjectAtIndex:ci withObject:config];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"feeds_config_to_be_updated" object:self];
             [ud setValue:configs forKey:@"feeds"];
+            
+            [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:@"feeds_config_updated" object:self] postingStyle:NSPostASAP  coalesceMask:NSNotificationCoalescingOnName forModes:nil];
             return;
         }
-        ci=ci+1;
     }
 }
 @end

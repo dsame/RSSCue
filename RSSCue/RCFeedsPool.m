@@ -26,6 +26,16 @@ static RCFeedsPool * _sharedPool;
     return _sharedPool;
 }
 
+-(id)init{
+    self=[super init];
+    _launchTime=[[NSDate date] retain];
+    return self;
+}
+
+-(void) dealloc{
+    [_launchTime release];
+    [super dealloc];
+}
 -(void) addFeed:(RCFeed *)feed withConfig:(NSDictionary *)config {
     NSTimeInterval interval=[[config objectForKey:@"interval"] doubleValue];
     if (interval<10) interval=10; //precaution
@@ -46,7 +56,7 @@ static RCFeedsPool * _sharedPool;
     NSAssert(uuid!=nil, @"UUID must not be nill\n%@", config);
     RCFeed* feed=[[[RCFeed alloc] initWithUUID:uuid andDelegate:self] autorelease];
  
-    [feed run];
+    //[feed run];
     [self addFeed:feed withConfig:config];
 };
 
@@ -85,6 +95,13 @@ static RCFeedsPool * _sharedPool;
 }
 
 - (void)runFeed:(NSTimer*)timer {
+    NSUserDefaults *ud=[NSUserDefaults standardUserDefaults];
+    
+    if ([[ud objectForKey:@"delayOnLaunch"] boolValue]==YES){
+        NSTimeInterval passed=[[NSDate date] timeIntervalSinceDate:_launchTime];
+        NSTimeInterval expected=[[ud objectForKey:@"delayOnLaunchInterval"] doubleValue];
+        if (passed<expected) return;
+    }
     RCFeed *feed=[[timer userInfo] objectForKey:@"feed"];
     NSLog(@"Feed %@ started",feed.name);
     [feed run];
@@ -106,7 +123,7 @@ static RCFeedsPool * _sharedPool;
 }
 - (void) feedSuccess:(RCFeed *) feed{
     NSLog(@"Feed \"%@\" success",feed.name);
-    unsigned int repc=0;
+    unsigned int repc=0,rept=0;
     unsigned int max=[[feed.configuration objectForKey:@"max"] unsignedIntValue];
     
     for(RCItem * i in feed.items){
@@ -117,19 +134,20 @@ static RCFeedsPool * _sharedPool;
                                            iconData:nil
                                            priority:0
                                            isSticky:NO
-                                       clickContext:nil];
+                                       clickContext:i.link];
             i.reported=YES;
             repc=repc+1;
+            rept=rept+1;
             if (repc>=max){
-                NSLog(@"Feed \"%@\" exceeded number of max allowed entries, some will be skipped",feed.name);
+      //          NSLog(@"Feed \"%@\" exceeded number of max allowed entries, some will be skipped",feed.name);
                 break;
             }
         }else{
-            repc=repc+1;
+            rept=rept+1;
         }
     }
     
-    feed.reported=repc;
+    feed.reported=rept;
     
     [NSUserDefaults updateConfigForFeed:feed];
     

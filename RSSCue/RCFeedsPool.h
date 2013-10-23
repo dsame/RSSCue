@@ -12,8 +12,11 @@
 
 @interface RCFeedsPool : NSObject<RCFeedDelegate> {
     NSMutableDictionary* _timers;
+    NSDate* _launchTime;
 }
 +(RCFeedsPool*) sharedPool;
+
+
 -(void)launchAll;
 -(RCFeed *) feedForUUID:(NSString *)uuid;
 -(void) addFeedByUUID:(NSString*)uuid;

@@ -11,6 +11,7 @@
 
 @interface RCPreferencesController : NSWindowController <RCFeedDelegate> {
     RCFeed * _feed;
+    NSString * _uuid;
 }
 
 @property (assign) IBOutlet NSArrayController *feedsArrayController;

@@ -33,6 +33,10 @@
     NSDictionary * config=[selection count]>0?[selection objectAtIndex:0]:nil;
     return config;
 }
+- (NSString *)selectedUUID {
+    NSDictionary *config=[self selectedConfig];
+    return config?[config objectForKey:@"uuid"]:nil;
+}
 
 - (void) setControlsEnabled {
     unsigned long c=[[feedsArrayController selectedObjects] count];
@@ -120,8 +124,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(feedUpdated:)
                                                  name:@"feedUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(feedsConfigWillUpdate:)
+                                                 name:@"feeds_config_to_be_updated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                         selector:@selector(feedsConfigDidUpdate:)
+                                             name:@"feeds_config_updated" object:nil];
 }
-
 #pragma mark Controls observers & delegators
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -176,7 +185,7 @@
                                              @"", @"logon",
                                              @"",@"password",
                                              [NSNumber numberWithBool:NO],@"enabled",
-                                             [NSNumber numberWithInt: 1],@"max",
+                                             [NSNumber numberWithInt: 3],@"max",
                                              [NSNumber numberWithInteger:60],@"interval",
                                              nil]];
             [[RCFeedsPool sharedPool] addFeedByUUID:(NSString *)uuid];
@@ -216,6 +225,23 @@
     if (![self.window isVisible]) return;
     [self updateInfoText];
 }
+-(void) feedsConfigWillUpdate:(NSNotification *)notification {
+    [_uuid release];
+    _uuid=[[self selectedUUID] retain];
+}
+-(void) feedsConfigDidUpdate:(NSNotification *)notification {
+    if (_uuid!=nil){
+        NSArray * configs=[feedsArrayController arrangedObjects];
+        for (unsigned long i=0; i<configs.count; i++) {
+            if ([_uuid isEqualToString:[[configs objectAtIndex:i] objectForKey:@"uuid"]]){
+                [feedsArrayController setSelectionIndex:i];
+                break;
+            }
+        }
+        [_uuid release];
+        _uuid=nil;
+    }
+}
 
 #pragma mark FeedDelegate
 -(void) feedFailed:(RCFeed *)feed {
@@ -232,7 +258,7 @@
 }
 
 -(void) feedStateChanged:(RCFeed *)feed {
-
+    
 }
 
 

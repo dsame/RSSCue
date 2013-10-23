@@ -31,8 +31,11 @@ typedef enum {
 	NSMutableData * _responseData;	
 	BOOL _isAtom;
     BOOL _inTag;
+    BOOL _summary;
+    BOOL _content;
 	RC_FEED_STATE _state;
 	int _waitFor;
+    NSString * _uuid;
 	
 	NSMutableArray * _newItems;
 	RCItem * _item;//current

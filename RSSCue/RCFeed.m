@@ -112,6 +112,7 @@ typedef enum {
 	[parser setDelegate:self];
 	[parser setShouldResolveExternalEntities:NO];
 	_state=kParserNothingMet;
+    _waitFor=kNoWait;
     NSAssert(_newItems==nil,@"_newItems must be nil on parse start");
     NSAssert(_item==nil,@"_item must be nil on parse start");
     _newItems=[[NSMutableArray arrayWithCapacity:25] retain];
@@ -189,16 +190,31 @@ typedef enum {
 		}else if ( [elementName isEqualToString:@"image"]) {
 			_state=kParserImageMet;
 		}else if ( [elementName isEqualToString:@"item"]|| [elementName isEqualToString:@"entry"]) {
+            _summary=NO;
+            _content=NO;
             _state=kParserItemMet;
             [_delegate feedStateChanged:self];                            
 		}
 	}else if (_state==kParserItemMet){
 		if ( [elementName isEqualToString:@"title"]) {
 			_waitFor=kWaitForTitle;
-		}else if ( [elementName isEqualToString:@"description"] || [elementName isEqualToString:@"summary"]) {
+		}else if (!_isAtom && [elementName isEqualToString:@"description"]) {
 			_waitFor=kWaitForDescription;
+		}else if (_isAtom && [elementName isEqualToString:@"summary"]) {
+			_waitFor=kWaitForDescription;
+            _summary=YES;
+            if (_content){
+                _item.description=@"";
+            }
+		}else if (_isAtom && !_summary && [elementName isEqualToString:@"content"]) {
+			_waitFor=kWaitForDescription;    
+            _content=YES;
 		}else if ( [elementName isEqualToString:@"link"]) {
-			_waitFor=kWaitForLink;
+            if (_isAtom){
+                _item.link=[attributeDict objectForKey:@"href"];
+                _waitFor=kNoWait;
+            }else
+                _waitFor=kWaitForLink;
 		}else if ( [elementName isEqualToString:@"pubDate"] || [elementName isEqualToString:@"updated"]) {
 			_waitFor=kWaitForDate;
 		}else if ( [elementName isEqualToString:@"item"]|| [elementName isEqualToString:@"entry"]) {
