@@ -24,6 +24,15 @@
     return self;
 }
 
+- (void)dealloc{
+    [_date release];
+    [_description release];
+    [_link release];
+    [_title release];
+    
+    [super dealloc];
+}
+
 -(BOOL) isSameAs:(RCItem*)item{
     return [self.title isEqualToString:item.title] && [self.description isEqualToString:item.description] && [self.link isEqualToString:item.link];
 };

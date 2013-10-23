@@ -28,7 +28,7 @@ typedef enum {
 
 
 @interface RCFeed : NSObject<NSXMLParserDelegate> {
-	NSMutableData * _responseData;	
+    NSMutableData * _responseData;	
 	BOOL _isAtom;
     BOOL _inTag;
     BOOL _atomSummary;
@@ -36,25 +36,34 @@ typedef enum {
     BOOL _atomSelfLink;
 	RC_FEED_STATE _state;
 	int _waitFor;
-    NSString * _uuid;
-	
 	NSMutableArray * _newItems;
 	RCItem * _item;//current
+    NSURLConnection * _connection;
+    
+    NSString * _uuid;
+    NSString *_link;
+	NSString *_title;
+    NSString *_description;
+    NSArray *_items;
+    NSError *_error;
+    NSURL *_effectiveURL;
+    id <RCFeedDelegate> _delegate;
+    unsigned int _reported;
 }
 
 @property (copy) NSString * link;
 @property (copy) NSString * title;
 @property (copy) NSString * description;
 @property (assign) unsigned int reported;
-
+@property (readonly) NSString *type;
+@property (retain) NSURL* effectiveURL;
 @property (readonly) NSArray * items;
 @property (readonly) NSError * error;
 @property (readonly) NSString * name;
 @property (readonly) NSString * uuid;
 @property (retain) id <RCFeedDelegate> delegate;
 @property (assign) RC_FEED_STATE state;
-@property (readonly) NSString *type;
-@property (retain) NSURL* effectiveURL;
+
 
 - (id) initWithUUID:(NSString *)uuid andDelegate:(id<RCFeedDelegate>) delegate;
 

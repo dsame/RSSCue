@@ -12,6 +12,21 @@
 @interface RCPreferencesController : NSWindowController <RCFeedDelegate> {
     RCFeed * _feed;
     NSString * _uuid;
+    
+    NSArrayController *_feedsArrayController;
+    NSSegmentedControl *_buttons;
+    NSTextField *_info;
+    NSTextField *_fieldURL;
+    NSTextField *_fieldLogin;
+    NSTextField *_fieldInterval;
+    NSTextField *_fieldPassword;
+    NSProgressIndicator *_progress;
+    NSStepper *_stepperInterval;
+    NSStepper *_stepperMax;
+    NSButton *_checkboxEnabled;
+    
+    NSString *_login;
+    NSString *_password;
 }
 
 @property (assign) IBOutlet NSArrayController *feedsArrayController;

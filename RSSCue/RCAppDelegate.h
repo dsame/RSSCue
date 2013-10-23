@@ -10,9 +10,9 @@
 #import <Growl/Growl.h>
 
 @interface RCAppDelegate : NSObject <NSApplicationDelegate, GrowlApplicationBridgeDelegate> {
-@private
     NSWindowController *_preferencesPanelController;
     NSStatusItem * _statusItem;
+    NSMenu* _statusMenu;
 }
 
 @property (assign) IBOutlet NSMenu *statusMenu;

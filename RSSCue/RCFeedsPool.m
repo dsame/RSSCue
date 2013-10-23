@@ -92,7 +92,7 @@ static RCFeedsPool * _sharedPool;
     for (NSDictionary* config in configs){
         [self addFeedByConfig:config];
     }
-    NSLog(@"Timers have been respawned for %lu feeds",[_timers count]);
+    NSLog(@"Timers have been respawned for %d feeds",(int)[_timers count]);
 }
 
 - (void)runFeed:(NSTimer*)timer {
@@ -123,7 +123,7 @@ static RCFeedsPool * _sharedPool;
     NSLog(@"Feed \"%@\" failed with the message: %@(%@)",feed.name,[feed.error localizedDescription],[feed.error localizedRecoverySuggestion]);    
 }
 - (void) feedSuccess:(RCFeed *) feed{
-    NSLog(@"Feed \"%@\" success",feed.name);
+    NSLog(@"Feed \"%@\" just has been fetched",feed.name);
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"readOnLaunch"] boolValue]==YES && feed.reported==0){
         for(RCItem * i in feed.items) i.reported=YES;
         feed.reported=(unsigned int)feed.items.count;
@@ -140,6 +140,7 @@ static RCFeedsPool * _sharedPool;
                                                priority:0
                                                isSticky:NO
                                            clickContext:i.link];
+                 
                 i.reported=YES;
                 repc=repc+1;
                 rept=rept+1;

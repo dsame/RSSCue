@@ -18,6 +18,13 @@ typedef enum {
     kWaitForDate=4
 } WAITS;
 
+@interface RCFeed()  {    
+
+}
+@property (retain) NSMutableData* responseData;
+@property (retain) NSURLConnection *connection;
+@end
+
 @implementation RCFeed
 @synthesize link=_link;
 @synthesize title=_title;
@@ -29,6 +36,9 @@ typedef enum {
 @synthesize state=_state;
 @synthesize effectiveURL=_effectiveURL;
 @synthesize reported=_reported;
+@synthesize responseData=_responseData;
+@synthesize connection=_connection;
+
 
 #pragma mark utilities and accessros
 
@@ -56,25 +66,37 @@ typedef enum {
     self.delegate=delegate;
     _uuid=[uuid retain];
     _state=kUndefined;
-	_responseData = [NSMutableData new];
 	return self;
 }
 
+- (void)dealloc{
+    [_delegate release];
+    [_description release];
+    [_effectiveURL release];
+    [_error release];
+    [_items release];
+    [_link release];
+    [_title release];
+    [_uuid release];
+    [super dealloc];
+}
 - (void)run{
+    [_error release];
+    _error=nil;
     NSDictionary * configuration=[self configuration];
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[configuration valueForKey:@"url"]]];
-	NSURLConnection * connection=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];//TODO: segfault?
-    if (connection) {
+    NSAssert(self.connection==nil, @"The previous connections was not freed, memory leak");
+	_connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+   
+    if (self.connection) {
         _state=kHTTPsent;
-        [_error release];
-        _error=nil;
     }else{
-        NSDictionary *userInfo = [[NSDictionary dictionaryWithObjectsAndKeys:
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   @"Can not create a connection.",NSLocalizedDescriptionKey,
-                                  nil] autorelease];
-        [_error release];
+                                  nil];
         _error=[[NSError errorWithDomain:@"RSSCuew" code:_state userInfo:userInfo] retain];
         _state=kHTTPfail;
+        self.connection=nil;
     }
     [_delegate feedStateChanged:self];
 }
@@ -83,20 +105,22 @@ typedef enum {
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    [_responseData setLength:0];
+    self.responseData = [NSMutableData dataWithLength:0];
     _state=kHTTPresposne;
     [_delegate feedStateChanged:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    [_responseData appendData:data];
+    [self.responseData appendData:data];
     _state=kHTTPdata;
     [_delegate feedStateChanged:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    self.responseData = nil;
+    self.connection=nil;
     [_error release];
     _error=[error retain];
     _state=kHTTPfail;
@@ -105,10 +129,11 @@ typedef enum {
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    self.connection=nil;
     _state=kHTTPfinished;
     [_delegate feedStateChanged:self];
-    
-	NSXMLParser * parser=[[[NSXMLParser alloc] initWithData:_responseData] autorelease];
+       
+    NSXMLParser * parser=[[[NSXMLParser alloc] initWithData:_responseData] autorelease];
 	[parser setDelegate:self];
 	[parser setShouldResolveExternalEntities:NO];
 	_state=kParserNothingMet;
@@ -124,6 +149,7 @@ typedef enum {
     
     [_delegate feedStateChanged:self];
 	[parser parse];
+    self.responseData=nil;
     
     if (_state!=kParserError){
         

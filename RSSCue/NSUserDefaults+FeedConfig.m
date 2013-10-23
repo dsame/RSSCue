@@ -23,9 +23,9 @@
 }
 + (void) updateConfigForFeed:(RCFeed*)feed {
     NSUserDefaults* ud=[NSUserDefaults standardUserDefaults];
-    NSMutableArray *configs=[[[ud valueForKey:@"feeds"] mutableCopy] autorelease];
+    NSMutableArray *configs=[[ud valueForKey:@"feeds"] mutableCopy];
     for (unsigned int ci=0;ci<configs.count;ci++){
-        NSMutableDictionary* config=[[[configs objectAtIndex:ci] mutableCopy] autorelease];
+        NSMutableDictionary* config=[[configs objectAtIndex:ci] mutableCopy];
         if ([feed.uuid isEqualToString:[config valueForKey:@"uuid"]]){
             [config setValue:feed.title forKey:@"title"];
             [config setValue:feed.link forKey:@"link"];
@@ -35,10 +35,14 @@
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"feeds_config_to_be_updated" object:self];
             [ud setValue:configs forKey:@"feeds"];
+            [config release];
+            [configs release];
             
             [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:@"feeds_config_updated" object:self] postingStyle:NSPostASAP  coalesceMask:NSNotificationCoalescingOnName forModes:nil];
             return;
         }
+        [config release];
     }
+    [configs release];
 }
 @end
