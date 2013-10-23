@@ -37,6 +37,9 @@ static RCFeedsPool * _sharedPool;
     [super dealloc];
 }
 -(void) addFeed:(RCFeed *)feed withConfig:(NSDictionary *)config {
+    if (NO==[[config valueForKey:@"enabled"] boolValue]) {
+        return;
+    }
     NSTimeInterval interval=[[config objectForKey:@"interval"] doubleValue];
     if (interval<10) interval=10; //precaution
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:interval
@@ -49,13 +52,11 @@ static RCFeedsPool * _sharedPool;
 };
 
 -(void) addFeedByConfig:(NSDictionary *)config {
-    if (NO==[[config valueForKey:@"enabled"] boolValue]) {
-        return;
-    }
+
     NSString *uuid=[config valueForKey:@"uuid"];
     NSAssert(uuid!=nil, @"UUID must not be nill\n%@", config);
     RCFeed* feed=[[[RCFeed alloc] initWithUUID:uuid andDelegate:self] autorelease];
- 
+    
     //[feed run];
     [self addFeed:feed withConfig:config];
 };
@@ -103,7 +104,7 @@ static RCFeedsPool * _sharedPool;
         if (passed<expected) return;
     }
     RCFeed *feed=[[timer userInfo] objectForKey:@"feed"];
-    NSLog(@"Feed %@ started",feed.name);
+    //NSLog(@"Feed %@ started",feed.name);
     [feed run];
 }
 
@@ -117,37 +118,42 @@ static RCFeedsPool * _sharedPool;
 
 #pragma mark Feed Deligators
 - (void) feedFailed:(RCFeed *) feed{
-
+    
     
     NSLog(@"Feed \"%@\" failed with the message: %@(%@)",feed.name,[feed.error localizedDescription],[feed.error localizedRecoverySuggestion]);    
 }
 - (void) feedSuccess:(RCFeed *) feed{
     NSLog(@"Feed \"%@\" success",feed.name);
-    unsigned int repc=0,rept=0;
-    unsigned int max=[[feed.configuration objectForKey:@"max"] unsignedIntValue];
-    
-    for(RCItem * i in feed.items){
-        if (!i.isReported){
-            [GrowlApplicationBridge notifyWithTitle:i.title
-                                        description:[NSString stringWithFormat:@"%@",i.description]
-                                   notificationName:@"ItemArrived"
-                                           iconData:nil
-                                           priority:0
-                                           isSticky:NO
-                                       clickContext:i.link];
-            i.reported=YES;
-            repc=repc+1;
-            rept=rept+1;
-            if (repc>=max){
-      //          NSLog(@"Feed \"%@\" exceeded number of max allowed entries, some will be skipped",feed.name);
-                break;
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"readOnLaunch"] boolValue]==YES && feed.reported==0){
+        for(RCItem * i in feed.items) i.reported=YES;
+        feed.reported=(unsigned int)feed.items.count;
+    }else{
+        unsigned int repc=0,rept=0;
+        unsigned int max=[[feed.configuration objectForKey:@"max"] unsignedIntValue];
+        
+        for(RCItem * i in feed.items){
+            if (!i.isReported){
+                [GrowlApplicationBridge notifyWithTitle:i.title
+                                            description:[NSString stringWithFormat:@"%@",i.description]
+                                       notificationName:@"ItemArrived"
+                                               iconData:nil
+                                               priority:0
+                                               isSticky:NO
+                                           clickContext:i.link];
+                i.reported=YES;
+                repc=repc+1;
+                rept=rept+1;
+                if (repc>=max){
+                    //          NSLog(@"Feed \"%@\" exceeded number of max allowed entries, some will be skipped",feed.name);
+                    break;
+                }
+            }else{
+                rept=rept+1;
             }
-        }else{
-            rept=rept+1;
         }
+        feed.reported=rept;
     }
     
-    feed.reported=rept;
     
     [NSUserDefaults updateConfigForFeed:feed];
     

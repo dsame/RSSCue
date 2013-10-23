@@ -113,6 +113,8 @@ typedef enum {
 	[parser setShouldResolveExternalEntities:NO];
 	_state=kParserNothingMet;
     _waitFor=kNoWait;
+ 
+    
     NSAssert(_newItems==nil,@"_newItems must be nil on parse start");
     NSAssert(_item==nil,@"_item must be nil on parse start");
     _newItems=[[NSMutableArray arrayWithCapacity:25] retain];
@@ -186,12 +188,20 @@ typedef enum {
 		}else if ( [elementName isEqualToString:@"description"] || [elementName isEqualToString:@"subtitle"]) {
 			_waitFor=kWaitForDescription;
 		}else if ( [elementName isEqualToString:@"link"]) {
-			_waitFor=kWaitForLink;
+            if (_isAtom){
+                if (!_atomSelfLink || [[attributeDict objectForKey:@"rel"] isEqualToString:@"self"]){
+                    if (!_atomSelfLink) _atomSelfLink=YES;
+                    self.link=[attributeDict objectForKey:@"href"];
+                    _waitFor=kNoWait;
+                }
+            }else
+                _waitFor=kWaitForLink;
 		}else if ( [elementName isEqualToString:@"image"]) {
 			_state=kParserImageMet;
 		}else if ( [elementName isEqualToString:@"item"]|| [elementName isEqualToString:@"entry"]) {
-            _summary=NO;
-            _content=NO;
+            _atomSummary=NO;
+            _atomContent=NO;
+            _atomSelfLink=NO;
             _state=kParserItemMet;
             [_delegate feedStateChanged:self];                            
 		}
@@ -202,13 +212,13 @@ typedef enum {
 			_waitFor=kWaitForDescription;
 		}else if (_isAtom && [elementName isEqualToString:@"summary"]) {
 			_waitFor=kWaitForDescription;
-            _summary=YES;
-            if (_content){
+            _atomSummary=YES;
+            if (_atomContent){
                 _item.description=@"";
             }
-		}else if (_isAtom && !_summary && [elementName isEqualToString:@"content"]) {
+		}else if (_isAtom && !_atomSummary && [elementName isEqualToString:@"content"]) {
 			_waitFor=kWaitForDescription;    
-            _content=YES;
+            _atomContent=YES;
 		}else if ( [elementName isEqualToString:@"link"]) {
             if (_isAtom){
                 _item.link=[attributeDict objectForKey:@"href"];

@@ -19,15 +19,18 @@
 {
     [super dealloc];
 }
-	
+
 #pragma mark *** Launching ***
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    /*
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"showMenu"] intValue]==1){
-        [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
-    }*/
+    [[NSUserDefaults standardUserDefaults] registerDefaults:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [NSNumber numberWithBool:YES],@"readOnLaunch", 
+      [NSNumber numberWithBool:YES],@"delayOnLaunch", 
+      [NSNumber numberWithInt:300],@"delayOnLaunchInterval", 
+      [NSNumber numberWithInt:0],@"showMenu", 
+      nil]];
     [GrowlApplicationBridge setGrowlDelegate:self];
     [[RCFeedsPool sharedPool] launchAll];
 }

@@ -188,6 +188,7 @@
                                              [NSNumber numberWithInt: 3],@"max",
                                              [NSNumber numberWithInteger:60],@"interval",
                                              nil]];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             [[RCFeedsPool sharedPool] addFeedByUUID:(NSString *)uuid];
             break;
         case 1:
@@ -195,6 +196,7 @@
                 [[RCFeedsPool sharedPool] removeFeedByUUID:[config valueForKey:@"uuid"]];
             }
             [feedsArrayController remove:self]; 
+            [[NSUserDefaults standardUserDefaults] synchronize];
             break;
         case 2:
             NSAssert(config!=nil, @"Attempt to test a feed with no configuraiton");
