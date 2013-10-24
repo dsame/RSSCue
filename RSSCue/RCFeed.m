@@ -15,7 +15,8 @@ typedef enum {
 	kWaitForTitle=1,
 	kWaitForDescription=2,
 	kWaitForLink=3,
-    kWaitForDate=4
+    kWaitForDate=4,
+    kWaitForImage=5
 } WAITS;
 
 @interface RCFeed()  {    
@@ -38,6 +39,7 @@ typedef enum {
 @synthesize reported=_reported;
 @synthesize responseData=_responseData;
 @synthesize connection=_connection;
+@synthesize img=_img;
 
 
 #pragma mark utilities and accessros
@@ -78,6 +80,7 @@ typedef enum {
     [_link release];
     [_title release];
     [_uuid release];
+    [_img release];
     [super dealloc];
 }
 - (void)run{
@@ -231,6 +234,10 @@ typedef enum {
             _state=kParserItemMet;
             [_delegate feedStateChanged:self];                            
 		}
+    }else if (_state==kParserImageMet){
+        if ( [elementName isEqualToString:@"url"]) {
+                _waitFor=kWaitForImage;
+		}
 	}else if (_state==kParserItemMet){
 		if ( [elementName isEqualToString:@"title"]) {
 			_waitFor=kWaitForTitle;
@@ -301,6 +308,14 @@ typedef enum {
 			default:
 				break;
 		}
+    } else if (_state==kParserImageMet){
+		switch (_waitFor) {
+			case kWaitForImage:
+				self.img=string;_waitFor=kNoWait;
+				break;
+			default:
+				break;
+        }
 	}else if (_state==kParserItemMet) {
 		switch (_waitFor) {
 			case kWaitForTitle:

@@ -29,7 +29,6 @@
     [_description release];
     [_link release];
     [_title release];
-    
     [super dealloc];
 }
 

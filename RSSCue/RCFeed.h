@@ -44,6 +44,8 @@ typedef enum {
     NSString *_link;
 	NSString *_title;
     NSString *_description;
+    NSString * _img;
+    
     NSArray *_items;
     NSError *_error;
     NSURL *_effectiveURL;
@@ -54,6 +56,8 @@ typedef enum {
 @property (copy) NSString * link;
 @property (copy) NSString * title;
 @property (copy) NSString * description;
+@property (copy) NSString * img;
+
 @property (assign) unsigned int reported;
 @property (readonly) NSString *type;
 @property (retain) NSURL* effectiveURL;
