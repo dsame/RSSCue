@@ -21,9 +21,17 @@
         NSArray* words = [self componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         words = [words filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self <> ''"]];
         
-
-        result = [words componentsJoinedByString:@" "];        
-	}
+        
+        result = [[[[[[[[[words componentsJoinedByString:@" "] 
+                         stringByReplacingOccurrencesOfString: @"&apos;" withString:@"'"]                  
+                        stringByReplacingOccurrencesOfString: @"&dash;" withString:@"-"]                  
+                       stringByReplacingOccurrencesOfString: @"&copy;" withString:@"©"]                  
+                      stringByReplacingOccurrencesOfString: @"&lt;" withString:@"<"]                  
+                     stringByReplacingOccurrencesOfString: @"&gt;" withString:@">"]                  
+                    stringByReplacingOccurrencesOfString: @"&amp;" withString:@"&"]                  
+                   stringByReplacingOccurrencesOfString: @"&nbsp;" withString:@" "]                  
+                  stringByReplacingOccurrencesOfString: @"&quot;" withString:@"\""];
+    }
 	return result;
 }
 - (NSString *)concatString:(NSString *)aString withLimit:(int)aLimit{
