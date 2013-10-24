@@ -136,7 +136,7 @@ static RCFeedsPool * _sharedPool;
                 [GrowlApplicationBridge notifyWithTitle:i.title
                                             description:[NSString stringWithFormat:@"%@",i.description]
                                        notificationName:@"ItemArrived"
-                                               iconData:nil
+                                               iconData:feed.imageData 
                                                priority:0
                                                isSticky:NO
                                            clickContext:i.link];

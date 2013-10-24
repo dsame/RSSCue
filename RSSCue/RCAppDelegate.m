@@ -61,7 +61,9 @@
         
     }
     [_preferencesPanelController showWindow:self];
-    [[_preferencesPanelController window] makeKeyAndOrderFront:self];
+    NSApplication *thisApp = [NSApplication sharedApplication];
+    [thisApp activateIgnoringOtherApps:YES];
+    [[_preferencesPanelController window] orderFront:self];
 }
 
 @end

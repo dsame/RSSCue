@@ -39,8 +39,6 @@ typedef enum {
 @synthesize reported=_reported;
 @synthesize responseData=_responseData;
 @synthesize connection=_connection;
-@synthesize img=_img;
-
 
 #pragma mark utilities and accessros
 
@@ -58,7 +56,24 @@ typedef enum {
     return [self.configuration objectForKey:@"name"];
 }
 
+- (void) setImageURL:(NSString *)url{
+    if (url==nil && _imageURL==nil) return;
+    if ([url isEqualToString:_imageURL]) return;
+    [_imageURL release];
+    [_imageData release];
+    if (url!=nil){
+        NSImage *image=[[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:url]];
+        _imageData=[[image TIFFRepresentation] retain];
+        [image release];
+    }else{
+        _imageURL=nil;
+        _imageData=nil;        
+    }
+}
 
+- (NSData *)imageData{
+    return _imageData;
+}
 #pragma mark Initialization
 
 - (id)initWithUUID:(NSString *)uuid andDelegate:(id<RCFeedDelegate>)delegate{
@@ -80,7 +95,7 @@ typedef enum {
     [_link release];
     [_title release];
     [_uuid release];
-    [_img release];
+    [_imageData release];
     [super dealloc];
 }
 - (void)run{
@@ -214,6 +229,8 @@ typedef enum {
 	}else if (_state==kParserHeaderMet){
 		if ( [elementName isEqualToString:@"title"]) {
 			_waitFor=kWaitForTitle;
+        }else if ( [elementName isEqualToString:@"logo"]) {
+                _waitFor=kWaitForImage;
 		}else if ( [elementName isEqualToString:@"description"] || [elementName isEqualToString:@"subtitle"]) {
 			_waitFor=kWaitForDescription;
 		}else if ( [elementName isEqualToString:@"link"]) {
@@ -302,6 +319,9 @@ typedef enum {
 			case kWaitForDescription:
 				self.description=[self.description concatString:[string flatternHTML] withLimit:256];
 				break;
+			case kWaitForImage://Atom
+				[self setImageURL:string];_waitFor=kNoWait;
+				break;
 			case kWaitForLink:
 				self.link=string;_waitFor=kNoWait;
 				break;
@@ -310,8 +330,8 @@ typedef enum {
 		}
     } else if (_state==kParserImageMet){
 		switch (_waitFor) {
-			case kWaitForImage:
-				self.img=string;_waitFor=kNoWait;
+			case kWaitForImage://RSS
+				[self setImageURL:string];_waitFor=kNoWait;
 				break;
 			default:
 				break;

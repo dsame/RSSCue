@@ -44,7 +44,8 @@ typedef enum {
     NSString *_link;
 	NSString *_title;
     NSString *_description;
-    NSString * _img;
+    NSData * _imageData;
+    NSString *_imageURL;
     
     NSArray *_items;
     NSError *_error;
@@ -56,7 +57,6 @@ typedef enum {
 @property (copy) NSString * link;
 @property (copy) NSString * title;
 @property (copy) NSString * description;
-@property (copy) NSString * img;
 
 @property (assign) unsigned int reported;
 @property (readonly) NSString *type;
@@ -65,6 +65,7 @@ typedef enum {
 @property (readonly) NSError * error;
 @property (readonly) NSString * name;
 @property (readonly) NSString * uuid;
+@property (readonly) NSData * imageData;
 @property (retain) id <RCFeedDelegate> delegate;
 @property (assign) RC_FEED_STATE state;
 
@@ -75,4 +76,6 @@ typedef enum {
 - (void) makeUnreported;
 
 - (NSMutableDictionary*) configuration;
+- (void) setImageURL:(NSString*)url;
+
 @end
