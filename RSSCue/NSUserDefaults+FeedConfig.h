@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "RCFeed.h"
 
-@interface NSUserDefaults (FeedConfig)
+@interface NSUserDefaults (FeedConfig) 
 + (NSMutableDictionary* ) configForFeedByUUID:(NSString *)uuid;
 + (void) updateConfigForFeed:(RCFeed*)feed;
++ (void) disableConfigUpdate;
 
 @end

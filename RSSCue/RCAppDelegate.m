@@ -28,6 +28,7 @@
      [NSDictionary dictionaryWithObjectsAndKeys:
       [NSNumber numberWithBool:YES],@"readOnLaunch", 
       [NSNumber numberWithBool:YES],@"delayOnLaunch", 
+      [NSNumber numberWithBool:NO],@"runOnLaunch", 
       [NSNumber numberWithInt:300],@"delayOnLaunchInterval", 
       [NSNumber numberWithInt:0],@"showMenu", 
       nil]];

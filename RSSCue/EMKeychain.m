@@ -79,7 +79,7 @@ static BOOL _logErrors;
 }
 - (BOOL)setPassword:(NSString *)newPasswordString {
 	if (!newPasswordString)
-		return NO;
+		newPasswordString=@"";
 	
 	[self willChangeValueForKey:@"password"];
 	[myPassword autorelease];
@@ -118,6 +118,7 @@ static BOOL _logErrors;
 
 @implementation EMKeychainItem (Private)
 - (BOOL)modifyAttributeWithTag:(SecItemAttr)attributeTag toBeString:(NSString *)newStringValue {
+    if (newStringValue==nil) newStringValue=@"";
 	const char *newValue = [newStringValue UTF8String];
 	SecKeychainAttribute attributes[1];
 	attributes[0].tag = attributeTag;

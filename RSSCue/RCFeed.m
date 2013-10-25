@@ -9,6 +9,7 @@
 #import "RCFeed.h"
 #import "NSString+Filtered.h"
 #import "NSUserDefaults+FeedConfig.h"
+#import "EMKeychain.h"
 
 typedef enum {
     kNoWait=0,
@@ -74,6 +75,7 @@ typedef enum {
 - (NSData *)imageData{
     return _imageData;
 }
+
 #pragma mark Initialization
 
 - (id)initWithUUID:(NSString *)uuid andDelegate:(id<RCFeedDelegate>)delegate{
@@ -101,9 +103,13 @@ typedef enum {
 - (void)run{
     [_error release];
     _error=nil;
+    if (self.connection!=nil) {
+        NSLog(@"Problem with \"%@\" feed: previous connections is not freed, it may be either memory leak or trying to connect too fast",self.name);
+        return;
+    };
+    _noCredentials=NO;
     NSDictionary * configuration=[self configuration];
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[configuration valueForKey:@"url"]]];
-    NSAssert(self.connection==nil, @"The previous connections was not freed, memory leak");
 	_connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
    
     if (self.connection) {
@@ -140,6 +146,14 @@ typedef enum {
     self.responseData = nil;
     self.connection=nil;
     [_error release];
+    if (_noCredentials){
+        error=[NSError errorWithDomain:error.domain 
+                                  code:error.code 
+                              userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                        @"No login/password provided",NSLocalizedDescriptionKey,
+                                        @"Use preferences of the feed to enter login and password",NSLocalizedRecoverySuggestionErrorKey,
+                                        nil]];
+    }
     _error=[error retain];
     _state=kHTTPfail;
     [_delegate feedFailed:self];
@@ -147,6 +161,7 @@ typedef enum {
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    NSLog(@"connection finish %@",self.name);
     self.connection=nil;
     _state=kHTTPfinished;
     [_delegate feedStateChanged:self];
@@ -201,6 +216,38 @@ typedef enum {
     self.effectiveURL = [request URL];//handle redirection
     return request;
 }
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
+    if (protectionSpace.authenticationMethod==NSURLAuthenticationMethodDefault ||
+        protectionSpace.authenticationMethod==NSURLAuthenticationMethodHTTPBasic){
+        return YES;
+    }
+    return NO;
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    if ([challenge previousFailureCount] == 0) {
+        NSLog(@"received authentication challenge");
+        
+        
+        //TODO: @"RSS Cue" should be defined outside
+        EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:@"RSS Cue" withUsername:self.uuid];
+        if (ki && ki.label && ![ki.label isEqualToString:@""]){
+            NSURLCredential *credential = [NSURLCredential credentialWithUser:ki.label
+                                                                    password:ki.password
+                                                                 persistence:NSURLCredentialPersistenceForSession];
+            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+        }else{
+            _noCredentials=YES;
+            [[challenge sender] cancelAuthenticationChallenge:challenge];
+        }
+    }
+    else {
+        NSLog(@"previous authentication failure");
+    }
+}
+- (void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    NSLog(@"cancel");        
+}
 
 #pragma mark XML
 
@@ -216,7 +263,7 @@ typedef enum {
 		}else {
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                       @"Feed is invalid",NSLocalizedDescriptionKey,
-                                      [NSString stringWithFormat:@"The proper feed must contatin \"atom\" or \"feed\" as its first elemenet but \"%@\" has been met",elementName,nil ],NSLocalizedRecoverySuggestionErrorKey,
+                                      [NSString stringWithFormat:@"The proper feed must contatin \"atom\" or \"feed\" as its first elemenet but \"%@\" has been met.",elementName,nil ],NSLocalizedRecoverySuggestionErrorKey,
                                       nil];
             _state=kParserError;
             [_error release];

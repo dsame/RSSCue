@@ -69,6 +69,7 @@ static RCFeedsPool * _sharedPool;
 
 -(void) removeFeedByUUID:(NSString*)uuid{
     NSTimer * timer=[_timers objectForKey:uuid];
+    if (!timer) return;
     RCFeed *feed=[[[timer userInfo] objectForKey:@"feed"] retain];
     [timer invalidate];
     [_timers removeObjectForKey:uuid];
@@ -117,10 +118,8 @@ static RCFeedsPool * _sharedPool;
 }
 
 #pragma mark Feed Deligators
-- (void) feedFailed:(RCFeed *) feed{
-    
-    
-    NSLog(@"Feed \"%@\" failed with the message: %@(%@)",feed.name,[feed.error localizedDescription],[feed.error localizedRecoverySuggestion]);    
+- (void) feedFailed:(RCFeed *) feed{    
+    NSLog(@"Feed \"%@\" failed with the message: %@. %@",feed.name,[feed.error localizedDescription],[feed.error localizedRecoverySuggestion]?[feed.error localizedRecoverySuggestion]:@"");    
 }
 - (void) feedSuccess:(RCFeed *) feed{
     NSLog(@"Feed \"%@\" just has been fetched",feed.name);
@@ -157,13 +156,6 @@ static RCFeedsPool * _sharedPool;
     
     
     [NSUserDefaults updateConfigForFeed:feed];
-    
-    NSNotification *n = [NSNotification notificationWithName:@"feedUpdate" object:feed];
-    [[NSNotificationQueue defaultQueue]
-     enqueueNotification:n
-     postingStyle:NSPostWhenIdle
-     coalesceMask:NSNotificationNoCoalescing
-     forModes:nil];
 }
 
 - (void) feedStateChanged:(RCFeed *) feed{

@@ -8,8 +8,13 @@
 
 #import "NSUserDefaults+FeedConfig.h"
 
+static volatile BOOL updateConfigEnabled;
 
 @implementation NSUserDefaults (FeedConfig)
+
++ (void) disableConfigUpdate{
+    updateConfigEnabled=NO;
+}
 
 + (NSMutableDictionary* ) configForFeedByUUID:(NSString *)uuid{
     NSMutableArray *configs=[[NSUserDefaults standardUserDefaults] valueForKey:@"feeds"];
@@ -33,12 +38,17 @@
             [config setValue:[NSDate date] forKey:@"lastFetch"];
             [configs replaceObjectAtIndex:ci withObject:config];
             
+            updateConfigEnabled=YES;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"feeds_config_to_be_updated" object:self];
-            [ud setValue:configs forKey:@"feeds"];
+            if (updateConfigEnabled){
+                [ud setValue:configs forKey:@"feeds"];
+            }
             [config release];
             [configs release];
             
-            [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:@"feeds_config_updated" object:self] postingStyle:NSPostASAP  coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+            
+            [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:@"feeds_config_updated" object:feed] postingStyle:NSPostASAP  coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+            
             return;
         }
         [config release];

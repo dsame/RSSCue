@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "419ECC12180E77F500B333D2"
-               BuildableName = "RSSCue.app"
+               BuildableName = "RSS Cue.app"
                BlueprintName = "RSS Cue"
                ReferencedContainer = "container:RSS Cue.xcodeproj">
             </BuildableReference>
@@ -32,7 +32,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "419ECC33180E77F500B333D2"
-               BuildableName = "RSSCueTests.octest"
+               BuildableName = "RSS CueTests.octest"
                BlueprintName = "RSS CueTests"
                ReferencedContainer = "container:RSS Cue.xcodeproj">
             </BuildableReference>
@@ -42,7 +42,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "419ECC12180E77F500B333D2"
-            BuildableName = "RSSCue.app"
+            BuildableName = "RSS Cue.app"
             BlueprintName = "RSS Cue"
             ReferencedContainer = "container:RSS Cue.xcodeproj">
          </BuildableReference>
@@ -60,7 +60,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "419ECC12180E77F500B333D2"
-            BuildableName = "RSSCue.app"
+            BuildableName = "RSS Cue.app"
             BlueprintName = "RSS Cue"
             ReferencedContainer = "container:RSS Cue.xcodeproj">
          </BuildableReference>
@@ -78,7 +78,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "419ECC12180E77F500B333D2"
-            BuildableName = "RSSCue.app"
+            BuildableName = "RSS Cue.app"
             BlueprintName = "RSS Cue"
             ReferencedContainer = "container:RSS Cue.xcodeproj">
          </BuildableReference>

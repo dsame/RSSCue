@@ -14,6 +14,7 @@
     RCFeed * _feed;
     NSString * _uuid;
     BOOL _isConfigUpdatingOutside;
+    BOOL _isEditing;
     
     NSArrayController *_feedsArrayController;
     NSSegmentedControl *_buttons;
@@ -33,7 +34,7 @@
 
 @property (retain) NSString* login;
 @property (retain) NSString* password;
-
+@property (assign) NSNumber* runOnLaunch;
 
 @property (assign) IBOutlet NSArrayController *feedsArrayController;
 @property (assign) IBOutlet NSSegmentedControl *buttons;

@@ -34,6 +34,8 @@ typedef enum {
     BOOL _atomSummary;
     BOOL _atomContent;
     BOOL _atomSelfLink;
+    BOOL _noCredentials;
+    
 	RC_FEED_STATE _state;
 	int _waitFor;
 	NSMutableArray * _newItems;

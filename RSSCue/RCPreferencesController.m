@@ -37,15 +37,13 @@ static NSString *const kServiceName = @"RSS Cue";
 
 -(NSString*)login{
     NSString* uuid=[self selectedUUID];
-    NSLog(@"login in %@",uuid);
     if (uuid==nil) return @"";
     EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
-    NSLog(@"l get %@",ki);
     return ki?ki.label:@"";
 }
 
 -(void)setLogin:(NSString *)login{
-    if (login==nil) return;//hack to trigger KVC on new selection
+    if ((void*)login==(void*)-1) return;//hack to trigger KVC on new selection
     NSString* uuid=[self selectedUUID];
     if (uuid==nil) return;
     EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
@@ -56,18 +54,20 @@ static NSString *const kServiceName = @"RSS Cue";
     if (ki){
         ki.label=login;
     }
-    NSLog(@"l set %@",ki);
+    if ((!ki.password || [ki.password isEqualToString:@""])&& (!ki.label || [ki.label isEqualToString:@""])){
+        NSError *error;
+        [EMKeychainItem deleteKeychainItem:ki error:&error];
+    }
 }
 -(NSString*)password{
     NSString* uuid=[self selectedUUID];
     if (uuid==nil) return @"";
     EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
-    NSLog(@"p get %@",ki);
     return ki?ki.password:@"";
 }
 
 -(void)setPassword:(NSString *)password{
-    if (password==nil) return;//hack to trigger KVC on new selection
+    if ((void*)password==(void*)-1) return;//hack to trigger KVC on new selection
     NSString* uuid=[self selectedUUID];
     if (uuid==nil) return;
     EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
@@ -78,9 +78,68 @@ static NSString *const kServiceName = @"RSS Cue";
     if (ki){
         ki.password=password;
     }
-    NSLog(@"p set %@",ki);
+    if ((!ki.password || [ki.password isEqualToString:@""])&& (!ki.label || [ki.label isEqualToString:@""])){
+        NSError *error;
+        [EMKeychainItem deleteKeychainItem:ki error:&error];
+    }
 }
 
+- (BOOL)loginItemExistsWithLoginItemReference:(LSSharedFileListRef)theLoginItemsRefs ForPath:(CFURLRef)thePath {
+    BOOL exists = NO;
+    UInt32 seedValue;
+    
+    // We're going to grab the contents of the shared file list (LSSharedFileListItemRef objects)
+    // and pop it in an array so we can iterate through it to find our item.
+    NSArray  *loginItemsArray = (NSArray *)LSSharedFileListCopySnapshot(theLoginItemsRefs, &seedValue);
+    for (id item in loginItemsArray) {
+        LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)item;
+        if (LSSharedFileListItemResolve(itemRef, 0, (CFURLRef*) &thePath, NULL) == noErr) {
+            if ([[(NSURL *)thePath path] hasPrefix:@"/Applications/MyApp.app"])
+                exists = YES;
+        }
+        return exists;
+    };
+    return NO;
+}
+
+-(BOOL) findLaunchItem:(LSSharedFileListItemRef*)pItemRef inLoginsList:(LSSharedFileListRef*)pLoginsList{
+    NSURL * appPath=[[NSRunningApplication currentApplication] bundleURL];
+    UInt32 seedValue;
+    *pLoginsList = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+    NSArray  *loginItemsArray = (NSArray *)LSSharedFileListCopySnapshot(*pLoginsList, &seedValue);
+    for (id item in loginItemsArray) {
+        *pItemRef = (LSSharedFileListItemRef)item;
+        NSURL* path;
+        if (LSSharedFileListItemResolve(*pItemRef, 0, (CFURLRef*) &path, NULL) == noErr) {
+            if ([path isEqual:appPath]) return YES;
+        }
+    };       
+    return NO;
+}
+-(void)setRunOnLaunch:(NSNumber*)runOnLaunch{
+    LSSharedFileListRef loginsList;
+    LSSharedFileListItemRef itemRef;
+    
+    BOOL exists=[self findLaunchItem:&itemRef inLoginsList:&loginsList];
+    CFURLRef path = (CFURLRef)[[NSRunningApplication currentApplication] bundleURL];
+    
+    if ([runOnLaunch boolValue] && !exists){        
+        NSNumber * exist=[self runOnLaunch];
+        if ([exist boolValue]) return;
+        LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginsList, kLSSharedFileListItemLast, NULL, NULL, path, NULL, NULL);
+        if (item)
+            CFRelease(item);
+    }else if (![runOnLaunch boolValue] && exists){        
+        LSSharedFileListItemRemove(loginsList, itemRef);
+    }
+}
+
+-(NSNumber *)runOnLaunch{
+    LSSharedFileListRef loginsList;
+    LSSharedFileListItemRef itemRef;
+    
+    return [NSNumber numberWithBool:[self findLaunchItem:&itemRef inLoginsList:&loginsList]];
+}
 
 #pragma mark utilities 
 - (NSDictionary *)selectedConfig{
@@ -117,6 +176,7 @@ static NSString *const kServiceName = @"RSS Cue";
 }
 
 - (void) updateInfoText {
+    //NSAssert(!_isEditing,@"External update must be disable while the Preferences are editing");
     NSArray * sel=[_feedsArrayController selectedObjects];
     if (sel.count<1){
         [self.info setStringValue:@""];
@@ -151,9 +211,26 @@ static NSString *const kServiceName = @"RSS Cue";
     [self.info setStringValue:[NSString stringWithFormat:@"%@\nURL: %@\nTotal number of entries: %@\nNumber of shown entries: %@\nLast fetch: %@\n%@",title,link,total,reported, lastFetchTxt,summary]];
 }
 
-- (IBAction)restartSelectedFeed:(id)sender {
+- (bool)endEditing;
+{
+	bool success;
+	id responder = [[self window] firstResponder];
+    
+	// If we're dealing with the field editor, the real first responder is
+	// its delegate.
+    
+	if ( (responder != nil) && [responder isKindOfClass:[NSTextView class]] && [(NSTextView*)responder isFieldEditor] )
+		responder = ( [[responder delegate] isKindOfClass:[NSResponder class]] ) ? [responder delegate] : nil;
+    
+	success = [[self window] makeFirstResponder:nil];
+    
+	// Return first responder status.
+    
+	if ( success && responder != nil )
+		[[self window ]makeFirstResponder:responder];
+    
+	return success;
 }
-
 
 
 #pragma mark Initialization
@@ -179,9 +256,6 @@ static NSString *const kServiceName = @"RSS Cue";
     [_feedsArrayController addObserver:self forKeyPath:@"selection" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];    
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(feedUpdated:)
-                                                 name:@"feedUpdate" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(feedsConfigWillUpdate:)
                                                  name:@"feeds_config_to_be_updated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -193,28 +267,37 @@ static NSString *const kServiceName = @"RSS Cue";
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"selection"]){
         if (!_isConfigUpdatingOutside) {
-            self.password=nil;//hack to trigger KVC
-            self.login=nil;//hack to trigger KVC
+            self.password=(NSString*)-1;//hack to trigger KVC
+            self.login=(NSString*)-1;//hack to trigger KVC
         }
         [self setControlsEnabled];
         [self updateInfoText];
     }
 }
 
+- (void)controlTextDidBeginEditing:(NSNotification *)obj{
+    _isEditing=YES;
+}
 - (void)controlTextDidEndEditing:(NSNotification *)aNotification {
-    NSTextField* f=[aNotification object];
-    if (f==self.fieldLogin||f==self.fieldURL||f==self.fieldPassword){
-        NSString* uuid=[[self selectedConfig] objectForKey:@"uuid"];
+    // The problem with this is the method may be called by the code, not by user action
+    // I detect this with _isEditing=Yes/No
+     NSAssert(!_isEditing || !_isConfigUpdatingOutside,@"External update must be disable while the Preferences are editing");
+    if (_isEditing){
+        NSString* uuid=[self selectedUUID];
+        NSAssert(uuid,@"If it was manual editing then uuid must be set. If it was not then isEditing must be NO");
         [[RCFeedsPool sharedPool] restartFeedByUUID:uuid];
     }
+    _isEditing=NO;
 }
 
 - (IBAction)stepperChanged:(id)sender {
+    if (_isConfigUpdatingOutside) return; // Ugly, but it's better than updating modifing config
     NSString* uuid=[[self selectedConfig] objectForKey:@"uuid"];
     [[RCFeedsPool sharedPool] restartFeedByUUID:uuid];
 }
 
 - (IBAction)enableFeed:(id)sender {
+    if (_isConfigUpdatingOutside) return; // Ugly, but it's better than updating modifing config
     NSString* uuid=[[self selectedConfig] objectForKey:@"uuid"];
     if ([self.checkboxEnabled state]==NSOnState )
         [[RCFeedsPool sharedPool] addFeedByUUID:uuid];
@@ -226,6 +309,9 @@ static NSString *const kServiceName = @"RSS Cue";
 
 #pragma mark *** Buttons ***
 - (IBAction)addRemoveFeed:(id)sender {
+    
+    [self endEditing];
+    
     NSInteger button=[sender selectedSegment];
 
     
@@ -239,18 +325,21 @@ static NSString *const kServiceName = @"RSS Cue";
             CFStringRef uuid;            theUUID = CFUUIDCreate(NULL);
             uuid = CFUUIDCreateString(NULL, theUUID);//TODO: release?
             CFRelease(theUUID);
-
-            [_feedsArrayController addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                             (NSString *)uuid,@"uuid",
-                                             @"",@"name",
-                                             @"",@"url",
-                                             @"", @"logon",
-                                             @"",@"password",
-                                             [NSNumber numberWithBool:NO],@"enabled",
-                                             [NSNumber numberWithInt: 3],@"max",
-                                             [NSNumber numberWithInteger:60],@"interval",
-                                             nil]];
+            NSDictionary *newConfig=[NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                     (NSString *)uuid,@"uuid",
+                                     @"",@"name",
+                                     @"",@"url",
+                                     @"", @"logon",
+                                     @"",@"password",
+                                     [NSNumber numberWithBool:NO],@"enabled",
+                                     [NSNumber numberWithInt: 3],@"max",
+                                     [NSNumber numberWithInteger:60],@"interval",
+                                     nil];
+            [_feedsArrayController addObject:newConfig];
+            [_feedsArrayController setSelectedObjects:[NSArray arrayWithObject: newConfig]];
+            
             [[NSUserDefaults standardUserDefaults] synchronize];
+            // enable is always false in this point 
             [[RCFeedsPool sharedPool] addFeedByUUID:(NSString *)uuid];
             CFRelease(uuid); 
             break;
@@ -264,11 +353,13 @@ static NSString *const kServiceName = @"RSS Cue";
                 if (uuid){
                     NSError *error;
                     EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
-                    [EMKeychainItem deleteKeychainItem:ki error:&error];
+                    if (ki) [EMKeychainItem deleteKeychainItem:ki error:&error];
                 }
             }
-            [_feedsArrayController remove:self]; 
+            NSUInteger selIndex=[_feedsArrayController selectionIndex];
+            [_feedsArrayController remove:self];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            if (selIndex>0) [_feedsArrayController setSelectionIndex:selIndex-1];
             break;
         }
         case 2:
@@ -296,27 +387,30 @@ static NSString *const kServiceName = @"RSS Cue";
 
 #pragma mark Handle notifications
 
--(void) feedUpdated:(NSNotification *)notification {
-    if (![self.window isVisible]) return;
-    [self updateInfoText];
-}
 -(void) feedsConfigWillUpdate:(NSNotification *)notification {
+    if (_isEditing) {
+        [NSUserDefaults disableConfigUpdate];
+        return;
+    }
     _isConfigUpdatingOutside=YES;
-    [_uuid release];
     _uuid=[[self selectedUUID] retain];
 }
 -(void) feedsConfigDidUpdate:(NSNotification *)notification {
     _isConfigUpdatingOutside=NO;
-    if (_uuid!=nil){
-        NSArray * configs=[_feedsArrayController arrangedObjects];
-        for (unsigned long i=0; i<configs.count; i++) {
-            if ([_uuid isEqualToString:[[configs objectAtIndex:i] objectForKey:@"uuid"]]){
-                [_feedsArrayController setSelectionIndex:i];
-                break;
+    if (!_isEditing){
+        if (_uuid!=nil){
+            NSArray * configs=[_feedsArrayController arrangedObjects];
+            for (unsigned long i=0; i<configs.count; i++) {
+                if ([_uuid isEqualToString:[[configs objectAtIndex:i] objectForKey:@"uuid"]]){
+                    [_feedsArrayController setSelectionIndex:i];
+                    break;
+                }
             }
+            [_uuid release];
+            _uuid=nil;
         }
-        [_uuid release];
-        _uuid=nil;
+        if ([self.window isVisible]) 
+            [self updateInfoText];   
     }
 }
 
@@ -341,13 +435,10 @@ static NSString *const kServiceName = @"RSS Cue";
 
 
 - (IBAction)save:(id)sender {
-    id r=[[[self window] firstResponder] retain];
-    [[self window] makeFirstResponder:nil];
-    [[self window] makeFirstResponder:r];
-    [r release];
     [[self window] close];
 }
 - (void)windowWillClose:(NSNotification *) notification{
+    [self endEditing];
     [[NSUserDefaults standardUserDefaults] synchronize];
     //[[RCFeedsPool sharedPool] launchAll];    
 }
