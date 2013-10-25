@@ -11,6 +11,10 @@
 		4176AAD218151A9100A079AC /* NSString+Filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = 4176AAD118151A9100A079AC /* NSString+Filtered.m */; };
 		4176AAD918157BCD00A079AC /* RSS-status-item.png in Resources */ = {isa = PBXBuildFile; fileRef = 4176AAD818157BCD00A079AC /* RSS-status-item.png */; };
 		4176AADC1815990000A079AC /* NSUserDefaults+FeedConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4176AADB1815990000A079AC /* NSUserDefaults+FeedConfig.m */; };
+		41974122181996490077A814 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41974121181996490077A814 /* Security.framework */; };
+		4197412D18199C0F0077A814 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4197412C18199C0F0077A814 /* Growl.framework */; };
+		4197412E18199CAE0077A814 /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4197412C18199C0F0077A814 /* Growl.framework */; };
+		419741371819D85C0077A814 /* EMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 419741361819D85C0077A814 /* EMKeychain.m */; };
 		419ECC18180E77F500B333D2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 419ECC17180E77F500B333D2 /* Cocoa.framework */; };
 		419ECC22180E77F500B333D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 419ECC20180E77F500B333D2 /* InfoPlist.strings */; };
 		419ECC24180E77F500B333D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 419ECC23180E77F500B333D2 /* main.m */; };
@@ -27,7 +31,6 @@
 		41CA86851812755F00E715A3 /* RCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CA86821812755F00E715A3 /* RCFeed.m */; };
 		41CA868918128E1900E715A3 /* RCItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CA868818128E1900E715A3 /* RCItem.m */; };
 		41CB98E3180EC23D006460D4 /* RCPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CB98E2180EC23D006460D4 /* RCPreferencesController.m */; };
-		41FC38781817F4F300643433 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41FC38771817F4F300643433 /* Growl.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,10 +46,11 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		4176AAA6181424C400A079AC /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				4197412E18199CAE0077A814 /* Growl.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,22 +63,26 @@
 		4176AAD818157BCD00A079AC /* RSS-status-item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RSS-status-item.png"; sourceTree = "<group>"; };
 		4176AADA1815990000A079AC /* NSUserDefaults+FeedConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+FeedConfig.h"; path = "RSSCue/NSUserDefaults+FeedConfig.h"; sourceTree = "<group>"; };
 		4176AADB1815990000A079AC /* NSUserDefaults+FeedConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+FeedConfig.m"; path = "RSSCue/NSUserDefaults+FeedConfig.m"; sourceTree = "<group>"; };
-		419ECC13180E77F500B333D2 /* RSSCue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSSCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		41974121181996490077A814 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		4197412718199AE70077A814 /* RSS Cue-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RSS Cue-Info.plist"; sourceTree = "<group>"; };
+		4197412818199AE70077A814 /* RSS Cue-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSS Cue-Prefix.pch"; sourceTree = "<group>"; };
+		4197412C18199C0F0077A814 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
+		419741351819D85C0077A814 /* EMKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMKeychain.h; sourceTree = "<group>"; };
+		419741361819D85C0077A814 /* EMKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMKeychain.m; sourceTree = "<group>"; };
+		419ECC13180E77F500B333D2 /* RSS Cue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RSS Cue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		419ECC17180E77F500B333D2 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		419ECC1A180E77F500B333D2 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		419ECC1B180E77F500B333D2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		419ECC1C180E77F500B333D2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		419ECC1F180E77F500B333D2 /* RSSCue-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RSSCue-Info.plist"; sourceTree = "<group>"; };
 		419ECC21180E77F500B333D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		419ECC23180E77F500B333D2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		419ECC25180E77F500B333D2 /* RSSCue-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RSSCue-Prefix.pch"; sourceTree = "<group>"; };
 		419ECC27180E77F500B333D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		419ECC29180E77F500B333D2 /* RCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCAppDelegate.h; sourceTree = "<group>"; };
 		419ECC2A180E77F500B333D2 /* RCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCAppDelegate.m; sourceTree = "<group>"; };
 		419ECC2D180E77F500B333D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		419ECC34180E77F500B333D2 /* RSSCueTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RSSCueTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		419ECC34180E77F500B333D2 /* RSS CueTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RSS CueTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		419ECC35180E77F500B333D2 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		419ECC3C180E77F500B333D2 /* RSSCueTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RSSCueTests-Info.plist"; sourceTree = "<group>"; };
+		419ECC3C180E77F500B333D2 /* RSS CueTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RSS CueTests-Info.plist"; sourceTree = "<group>"; };
 		419ECC3E180E77F500B333D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		419ECC40180E77F500B333D2 /* RSSCueTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSSCueTests.h; sourceTree = "<group>"; };
 		419ECC41180E77F500B333D2 /* RSSCueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSSCueTests.m; sourceTree = "<group>"; };
@@ -89,7 +97,6 @@
 		41CA868818128E1900E715A3 /* RCItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCItem.m; sourceTree = "<group>"; };
 		41CB98E1180EC23D006460D4 /* RCPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPreferencesController.h; sourceTree = "<group>"; };
 		41CB98E2180EC23D006460D4 /* RCPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPreferencesController.m; sourceTree = "<group>"; };
-		41FC38771817F4F300643433 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +104,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41974122181996490077A814 /* Security.framework in Frameworks */,
 				419ECC18180E77F500B333D2 /* Cocoa.framework in Frameworks */,
-				41FC38781817F4F300643433 /* Growl.framework in Frameworks */,
+				4197412D18199C0F0077A814 /* Growl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +144,27 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		4197411818197F250077A814 /* KeyChain */ = {
+			isa = PBXGroup;
+			children = (
+				419741351819D85C0077A814 /* EMKeychain.h */,
+				419741361819D85C0077A814 /* EMKeychain.m */,
+			);
+			name = KeyChain;
+			sourceTree = "<group>";
+		};
+		4197412618199A860077A814 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				4197412818199AE70077A814 /* RSS Cue-Prefix.pch */,
+				419ECC23180E77F500B333D2 /* main.m */,
+				419ECC29180E77F500B333D2 /* RCAppDelegate.h */,
+				419ECC2A180E77F500B333D2 /* RCAppDelegate.m */,
+				419ECC2C180E77F500B333D2 /* MainMenu.xib */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
 		419ECC08180E77F500B333D2 = {
 			isa = PBXGroup;
 			children = (
@@ -149,8 +178,8 @@
 		419ECC14180E77F500B333D2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				419ECC13180E77F500B333D2 /* RSSCue.app */,
-				419ECC34180E77F500B333D2 /* RSSCueTests.octest */,
+				419ECC13180E77F500B333D2 /* RSS Cue.app */,
+				419ECC34180E77F500B333D2 /* RSS CueTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,7 +197,8 @@
 		419ECC19180E77F500B333D2 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				41FC38771817F4F300643433 /* Growl.framework */,
+				4197412C18199C0F0077A814 /* Growl.framework */,
+				41974121181996490077A814 /* Security.framework */,
 				419ECC1A180E77F500B333D2 /* AppKit.framework */,
 				419ECC1B180E77F500B333D2 /* CoreData.framework */,
 				419ECC1C180E77F500B333D2 /* Foundation.framework */,
@@ -179,11 +209,10 @@
 		419ECC1D180E77F500B333D2 /* RSSCue */ = {
 			isa = PBXGroup;
 			children = (
+				4197412618199A860077A814 /* Application */,
+				4197411818197F250077A814 /* KeyChain */,
 				4176AAC41815175700A079AC /* Utilities */,
 				41CA867C1811B52100E715A3 /* Feeds */,
-				419ECC29180E77F500B333D2 /* RCAppDelegate.h */,
-				419ECC2A180E77F500B333D2 /* RCAppDelegate.m */,
-				419ECC2C180E77F500B333D2 /* MainMenu.xib */,
 				413222B2180FC79700AF48C3 /* Preferences */,
 				419ECC1E180E77F500B333D2 /* Supporting Files */,
 			);
@@ -194,12 +223,10 @@
 			isa = PBXGroup;
 			children = (
 				41AC7F791813FB3F00873307 /* Growl Registration Ticket.growlRegDict */,
+				4197412718199AE70077A814 /* RSS Cue-Info.plist */,
 				4176AAD818157BCD00A079AC /* RSS-status-item.png */,
 				4176AABB1814F56100A079AC /* icon.icns */,
-				419ECC1F180E77F500B333D2 /* RSSCue-Info.plist */,
 				419ECC20180E77F500B333D2 /* InfoPlist.strings */,
-				419ECC23180E77F500B333D2 /* main.m */,
-				419ECC25180E77F500B333D2 /* RSSCue-Prefix.pch */,
 				419ECC26180E77F500B333D2 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
@@ -218,7 +245,7 @@
 		419ECC3B180E77F500B333D2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				419ECC3C180E77F500B333D2 /* RSSCueTests-Info.plist */,
+				419ECC3C180E77F500B333D2 /* RSS CueTests-Info.plist */,
 				419ECC3D180E77F500B333D2 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -241,9 +268,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		419ECC12180E77F500B333D2 /* RSSCue */ = {
+		419ECC12180E77F500B333D2 /* RSS Cue */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 419ECC45180E77F500B333D2 /* Build configuration list for PBXNativeTarget "RSSCue" */;
+			buildConfigurationList = 419ECC45180E77F500B333D2 /* Build configuration list for PBXNativeTarget "RSS Cue" */;
 			buildPhases = (
 				419ECC0F180E77F500B333D2 /* Sources */,
 				419ECC10180E77F500B333D2 /* Frameworks */,
@@ -254,14 +281,14 @@
 			);
 			dependencies = (
 			);
-			name = RSSCue;
+			name = "RSS Cue";
 			productName = RSSCue;
-			productReference = 419ECC13180E77F500B333D2 /* RSSCue.app */;
+			productReference = 419ECC13180E77F500B333D2 /* RSS Cue.app */;
 			productType = "com.apple.product-type.application";
 		};
-		419ECC33180E77F500B333D2 /* RSSCueTests */ = {
+		419ECC33180E77F500B333D2 /* RSS CueTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 419ECC48180E77F500B333D2 /* Build configuration list for PBXNativeTarget "RSSCueTests" */;
+			buildConfigurationList = 419ECC48180E77F500B333D2 /* Build configuration list for PBXNativeTarget "RSS CueTests" */;
 			buildPhases = (
 				419ECC2F180E77F500B333D2 /* Sources */,
 				419ECC30180E77F500B333D2 /* Frameworks */,
@@ -273,9 +300,9 @@
 			dependencies = (
 				419ECC39180E77F500B333D2 /* PBXTargetDependency */,
 			);
-			name = RSSCueTests;
+			name = "RSS CueTests";
 			productName = RSSCueTests;
-			productReference = 419ECC34180E77F500B333D2 /* RSSCueTests.octest */;
+			productReference = 419ECC34180E77F500B333D2 /* RSS CueTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -287,7 +314,7 @@
 				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = DSA;
 			};
-			buildConfigurationList = 419ECC0D180E77F500B333D2 /* Build configuration list for PBXProject "RSSCue" */;
+			buildConfigurationList = 419ECC0D180E77F500B333D2 /* Build configuration list for PBXProject "RSS Cue" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -299,8 +326,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				419ECC12180E77F500B333D2 /* RSSCue */,
-				419ECC33180E77F500B333D2 /* RSSCueTests */,
+				419ECC12180E77F500B333D2 /* RSS Cue */,
+				419ECC33180E77F500B333D2 /* RSS CueTests */,
 			);
 		};
 /* End PBXProject section */
@@ -359,6 +386,7 @@
 				41AC7F711813C05900873307 /* RCFeedsPool.m in Sources */,
 				4176AAD218151A9100A079AC /* NSString+Filtered.m in Sources */,
 				4176AADC1815990000A079AC /* NSUserDefaults+FeedConfig.m in Sources */,
+				419741371819D85C0077A814 /* EMKeychain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,7 +403,7 @@
 /* Begin PBXTargetDependency section */
 		419ECC39180E77F500B333D2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 419ECC12180E77F500B333D2 /* RSSCue */;
+			target = 419ECC12180E77F500B333D2 /* RSS Cue */;
 			targetProxy = 419ECC38180E77F500B333D2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -480,13 +508,13 @@
 					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "RSSCue/RSSCue-Prefix.pch";
+				GCC_PREFIX_HEADER = "RSSCue/RSS Cue-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "RSSCue/RSSCue-Info.plist";
+				INFOPLIST_FILE = "RSSCue/RSS Cue-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "RSS Cue";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -502,13 +530,13 @@
 					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "RSSCue/RSSCue-Prefix.pch";
+				GCC_PREFIX_HEADER = "RSSCue/RSS Cue-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "RSSCue/RSSCue-Info.plist";
+				INFOPLIST_FILE = "RSSCue/RSS Cue-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "RSS Cue";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -520,8 +548,8 @@
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RSSCue/RSSCue-Prefix.pch";
-				INFOPLIST_FILE = "RSSCueTests/RSSCueTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "RSSCueTests/RSS CueTests-Info.plist";
+				PRODUCT_NAME = "RSS CueTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -534,8 +562,8 @@
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RSSCue/RSSCue-Prefix.pch";
-				INFOPLIST_FILE = "RSSCueTests/RSSCueTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "RSSCueTests/RSS CueTests-Info.plist";
+				PRODUCT_NAME = "RSS CueTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -544,7 +572,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		419ECC0D180E77F500B333D2 /* Build configuration list for PBXProject "RSSCue" */ = {
+		419ECC0D180E77F500B333D2 /* Build configuration list for PBXProject "RSS Cue" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				419ECC43180E77F500B333D2 /* Debug */,
@@ -553,7 +581,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		419ECC45180E77F500B333D2 /* Build configuration list for PBXNativeTarget "RSSCue" */ = {
+		419ECC45180E77F500B333D2 /* Build configuration list for PBXNativeTarget "RSS Cue" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				419ECC46180E77F500B333D2 /* Debug */,
@@ -562,7 +590,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		419ECC48180E77F500B333D2 /* Build configuration list for PBXNativeTarget "RSSCueTests" */ = {
+		419ECC48180E77F500B333D2 /* Build configuration list for PBXNativeTarget "RSS CueTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				419ECC49180E77F500B333D2 /* Debug */,

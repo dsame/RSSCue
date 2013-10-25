@@ -15,8 +15,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "419ECC12180E77F500B333D2"
                BuildableName = "RSSCue.app"
-               BlueprintName = "RSSCue"
-               ReferencedContainer = "container:RSSCue.xcodeproj">
+               BlueprintName = "RSS Cue"
+               ReferencedContainer = "container:RSS Cue.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,8 +33,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "419ECC33180E77F500B333D2"
                BuildableName = "RSSCueTests.octest"
-               BlueprintName = "RSSCueTests"
-               ReferencedContainer = "container:RSSCue.xcodeproj">
+               BlueprintName = "RSS CueTests"
+               ReferencedContainer = "container:RSS Cue.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,8 +43,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "419ECC12180E77F500B333D2"
             BuildableName = "RSSCue.app"
-            BlueprintName = "RSSCue"
-            ReferencedContainer = "container:RSSCue.xcodeproj">
+            BlueprintName = "RSS Cue"
+            ReferencedContainer = "container:RSS Cue.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -61,8 +61,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "419ECC12180E77F500B333D2"
             BuildableName = "RSSCue.app"
-            BlueprintName = "RSSCue"
-            ReferencedContainer = "container:RSSCue.xcodeproj">
+            BlueprintName = "RSS Cue"
+            ReferencedContainer = "container:RSS Cue.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -79,8 +79,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "419ECC12180E77F500B333D2"
             BuildableName = "RSSCue.app"
-            BlueprintName = "RSSCue"
-            ReferencedContainer = "container:RSSCue.xcodeproj">
+            BlueprintName = "RSS Cue"
+            ReferencedContainer = "container:RSS Cue.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

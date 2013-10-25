@@ -10,8 +10,10 @@
 #import "RCFeed.h"
 
 @interface RCPreferencesController : NSWindowController <RCFeedDelegate> {
+ //temporary iVars to hold data while UserDefaults is changed outside. see feedsConfigWillUpdate/feedsConfigDidUpdate
     RCFeed * _feed;
     NSString * _uuid;
+    BOOL _isConfigUpdatingOutside;
     
     NSArrayController *_feedsArrayController;
     NSSegmentedControl *_buttons;
@@ -29,18 +31,14 @@
     NSString *_password;
 }
 
+@property (retain) NSString* login;
+@property (retain) NSString* password;
+
+
 @property (assign) IBOutlet NSArrayController *feedsArrayController;
 @property (assign) IBOutlet NSSegmentedControl *buttons;
 @property (assign) IBOutlet NSTextField *info;
 @property (assign) IBOutlet NSProgressIndicator *progress;
-@property (retain) NSString* login;
-@property (retain) NSString* password;
-
-- (IBAction)addRemoveFeed:(id)sender;
-- (IBAction)save:(id)sender;
-
-- (void)controlTextDidEndEditing:(NSNotification *)aNotification;
-
 @property (assign) IBOutlet NSTextField *fieldURL;
 @property (assign) IBOutlet NSTextField *fieldLogin;
 @property (assign) IBOutlet NSTextField *fieldPassword;
@@ -49,7 +47,14 @@
 @property (assign) IBOutlet NSTextField *fieldInterval;
 @property (assign) IBOutlet NSButton *checkboxEnabled;
 
+
+- (IBAction)addRemoveFeed:(id)sender;
+- (IBAction)save:(id)sender;
 - (IBAction)stepperChanged:(id)sender;
 - (IBAction)enableFeed:(id)sender;
+
+- (void)controlTextDidEndEditing:(NSNotification *)aNotification;
+
+
 
 @end

@@ -9,8 +9,17 @@
 #import "RCPreferencesController.h"
 #import "RCFeedsPool.h"
 #import "NSUserDefaults+FeedConfig.h"
+#import "EMKeychain.h"
+
+static NSString *const kServiceName = @"RSS Cue";
+
+@interface  RCPreferencesController()
+-(NSString *)selectedUUID;    
+@end
 
 @implementation RCPreferencesController
+
+#pragma mark accessors
 @synthesize fieldURL=_fieldURL;
 @synthesize fieldLogin=_fieldLogin;
 @synthesize fieldPassword=_fieldPassword;
@@ -22,11 +31,56 @@
 @synthesize progress=_progress;
 @synthesize info=_info;
 
-@synthesize login=_login;
-@synthesize password=_password;
-
 @synthesize feedsArrayController=_feedsArrayController;
 @synthesize buttons=_buttons;
+
+
+-(NSString*)login{
+    NSString* uuid=[self selectedUUID];
+    NSLog(@"login in %@",uuid);
+    if (uuid==nil) return @"";
+    EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
+    NSLog(@"l get %@",ki);
+    return ki?ki.label:@"";
+}
+
+-(void)setLogin:(NSString *)login{
+    if (login==nil) return;//hack to trigger KVC on new selection
+    NSString* uuid=[self selectedUUID];
+    if (uuid==nil) return;
+    EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
+    if (!ki){
+        NSString *password=[self.fieldPassword stringValue];
+        ki=[EMGenericKeychainItem addGenericKeychainItemForService:(NSString *)kServiceName withUsername:uuid password:password label:login];
+    }
+    if (ki){
+        ki.label=login;
+    }
+    NSLog(@"l set %@",ki);
+}
+-(NSString*)password{
+    NSString* uuid=[self selectedUUID];
+    if (uuid==nil) return @"";
+    EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
+    NSLog(@"p get %@",ki);
+    return ki?ki.password:@"";
+}
+
+-(void)setPassword:(NSString *)password{
+    if (password==nil) return;//hack to trigger KVC on new selection
+    NSString* uuid=[self selectedUUID];
+    if (uuid==nil) return;
+    EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
+    if (!ki){
+        NSString *login=[self.fieldLogin stringValue];
+        ki=[EMGenericKeychainItem addGenericKeychainItemForService:(NSString *)kServiceName withUsername:uuid password:password label:login];
+    }
+    if (ki){
+        ki.password=password;
+    }
+    NSLog(@"p set %@",ki);
+}
+
 
 #pragma mark utilities 
 - (NSDictionary *)selectedConfig{
@@ -119,10 +173,11 @@
 
 }
 - (void) awakeFromNib {
-    [_feedsArrayController addObserver:self forKeyPath:@"selection" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];
-
     [self setControlsEnabled];
     [self updateInfoText];
+    
+    [_feedsArrayController addObserver:self forKeyPath:@"selection" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(feedUpdated:)
                                                  name:@"feedUpdate" object:nil];
@@ -137,6 +192,10 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"selection"]){
+        if (!_isConfigUpdatingOutside) {
+            self.password=nil;//hack to trigger KVC
+            self.login=nil;//hack to trigger KVC
+        }
         [self setControlsEnabled];
         [self updateInfoText];
     }
@@ -168,18 +227,19 @@
 #pragma mark *** Buttons ***
 - (IBAction)addRemoveFeed:(id)sender {
     NSInteger button=[sender selectedSegment];
-    CFUUIDRef theUUID;
-    CFStringRef uuid;
+
     
     NSArray * selection=[_feedsArrayController selectedObjects];
     NSDictionary * config=[selection count]>0?[selection objectAtIndex:0]:nil;
     RCFeed *f=config?[[RCFeedsPool sharedPool] feedForUUID:[config valueForKey:@"uuid"]]:nil;
     
     switch (button) {
-        case 0:
-            theUUID = CFUUIDCreate(NULL);
+        case 0:{
+            CFUUIDRef theUUID;
+            CFStringRef uuid;            theUUID = CFUUIDCreate(NULL);
             uuid = CFUUIDCreateString(NULL, theUUID);//TODO: release?
             CFRelease(theUUID);
+
             [_feedsArrayController addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
                                              (NSString *)uuid,@"uuid",
                                              @"",@"name",
@@ -194,13 +254,23 @@
             [[RCFeedsPool sharedPool] addFeedByUUID:(NSString *)uuid];
             CFRelease(uuid); 
             break;
-        case 1:
+        }
+        case 1:{
             if (f){ //no f means the feed is not enable
                 [[RCFeedsPool sharedPool] removeFeedByUUID:[config valueForKey:@"uuid"]];
+            }
+            if (config){
+                NSString* uuid=[config objectForKey:@"uuid"];
+                if (uuid){
+                    NSError *error;
+                    EMGenericKeychainItem * ki=[EMGenericKeychainItem genericKeychainItemForService:kServiceName withUsername:uuid];
+                    [EMKeychainItem deleteKeychainItem:ki error:&error];
+                }
             }
             [_feedsArrayController remove:self]; 
             [[NSUserDefaults standardUserDefaults] synchronize];
             break;
+        }
         case 2:
             NSAssert(config!=nil, @"Attempt to test a feed with no configuraiton");
             [self.progress startAnimation:self];
@@ -231,10 +301,12 @@
     [self updateInfoText];
 }
 -(void) feedsConfigWillUpdate:(NSNotification *)notification {
+    _isConfigUpdatingOutside=YES;
     [_uuid release];
     _uuid=[[self selectedUUID] retain];
 }
 -(void) feedsConfigDidUpdate:(NSNotification *)notification {
+    _isConfigUpdatingOutside=NO;
     if (_uuid!=nil){
         NSArray * configs=[_feedsArrayController arrangedObjects];
         for (unsigned long i=0; i<configs.count; i++) {
