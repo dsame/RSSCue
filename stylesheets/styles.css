@@ -601,6 +601,10 @@ code.green {
   background: #0a0;
 }
 
+code.downl {
+  background: none;
+}
+
 pre {
   padding: 8px 15px;
   background: #333333;
