@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404424262.611322"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "186"
-         endingLineNumber = "186"
+         startingLineNumber = "192"
+         endingLineNumber = "192"
          landmarkName = "-updateInfoText"
          landmarkType = "5">
       </FileBreakpoint>
@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeedsPool.m"
-         timestampString = "404396280.759695"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "133"
-         endingLineNumber = "133"
+         startingLineNumber = "135"
+         endingLineNumber = "135"
          landmarkName = "-feedSuccess:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -37,11 +37,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeedsPool.m"
-         timestampString = "404396280.759695"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "143"
-         endingLineNumber = "143"
+         startingLineNumber = "145"
+         endingLineNumber = "145"
          landmarkName = "-feedSuccess:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -51,11 +51,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "298"
-         endingLineNumber = "298"
+         startingLineNumber = "323"
+         endingLineNumber = "323"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -65,11 +65,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "306"
-         endingLineNumber = "306"
+         startingLineNumber = "331"
+         endingLineNumber = "331"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -79,11 +79,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "352"
-         endingLineNumber = "352"
+         startingLineNumber = "377"
+         endingLineNumber = "377"
          landmarkName = "-parser:foundCharacters:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -93,11 +93,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "361"
-         endingLineNumber = "361"
+         startingLineNumber = "386"
+         endingLineNumber = "386"
          landmarkName = "-parser:foundCharacters:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -107,11 +107,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "256"
-         endingLineNumber = "256"
+         startingLineNumber = "281"
+         endingLineNumber = "281"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -121,11 +121,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "277"
-         endingLineNumber = "277"
+         startingLineNumber = "302"
+         endingLineNumber = "302"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -135,11 +135,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "328"
-         endingLineNumber = "328"
+         startingLineNumber = "353"
+         endingLineNumber = "353"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -149,11 +149,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeedsPool.m"
-         timestampString = "404396280.759695"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
+         startingLineNumber = "163"
+         endingLineNumber = "163"
          landmarkName = "-feedStateChanged:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -163,11 +163,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeedsPool.m"
-         timestampString = "404396280.759695"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "159"
-         endingLineNumber = "159"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
          landmarkName = "-feedSuccess:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,11 +177,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "324"
-         endingLineNumber = "324"
+         startingLineNumber = "349"
+         endingLineNumber = "349"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -191,11 +191,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "321"
-         endingLineNumber = "321"
+         startingLineNumber = "346"
+         endingLineNumber = "346"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -205,11 +205,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "364"
-         endingLineNumber = "364"
+         startingLineNumber = "389"
+         endingLineNumber = "389"
          landmarkName = "-parser:foundCharacters:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -219,11 +219,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "367"
-         endingLineNumber = "367"
+         startingLineNumber = "392"
+         endingLineNumber = "392"
          landmarkName = "-parser:foundCharacters:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -233,11 +233,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "282"
-         endingLineNumber = "282"
+         startingLineNumber = "307"
+         endingLineNumber = "307"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -261,11 +261,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "285"
-         endingLineNumber = "285"
+         startingLineNumber = "310"
+         endingLineNumber = "310"
          landmarkName = "-parser:didStartElement:namespaceURI:qualifiedName:attributes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -289,11 +289,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "408"
-         endingLineNumber = "408"
+         startingLineNumber = "433"
+         endingLineNumber = "433"
          landmarkName = "-parserDidEndDocument:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -303,11 +303,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "183"
-         endingLineNumber = "183"
+         startingLineNumber = "208"
+         endingLineNumber = "208"
          landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -317,11 +317,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "132"
-         endingLineNumber = "132"
+         startingLineNumber = "157"
+         endingLineNumber = "157"
          landmarkName = "-connection:didReceiveResponse:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -331,11 +331,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "146"
-         endingLineNumber = "146"
+         startingLineNumber = "171"
+         endingLineNumber = "171"
          landmarkName = "-connection:didFailWithError:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -415,11 +415,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404427067.430174"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "329"
-         endingLineNumber = "329"
+         startingLineNumber = "335"
+         endingLineNumber = "335"
          landmarkName = "-addRemoveFeed:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -429,11 +429,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404488940.050152"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "394"
-         endingLineNumber = "394"
+         startingLineNumber = "401"
+         endingLineNumber = "401"
          landmarkName = "-feedsConfigWillUpdate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -443,11 +443,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404424262.611322"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "180"
-         endingLineNumber = "180"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
          landmarkName = "-updateInfoText"
          landmarkType = "5">
       </FileBreakpoint>
@@ -513,11 +513,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "245"
-         endingLineNumber = "245"
+         startingLineNumber = "270"
+         endingLineNumber = "270"
          landmarkName = "-connection:didReceiveAuthenticationChallenge:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -527,11 +527,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "234"
-         endingLineNumber = "234"
+         startingLineNumber = "259"
+         endingLineNumber = "259"
          landmarkName = "-connection:didReceiveAuthenticationChallenge:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -541,11 +541,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "249"
-         endingLineNumber = "249"
+         startingLineNumber = "274"
+         endingLineNumber = "274"
          landmarkName = "-connection:didCancelAuthenticationChallenge:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -555,11 +555,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "164"
-         endingLineNumber = "164"
+         startingLineNumber = "189"
+         endingLineNumber = "189"
          landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -569,11 +569,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404401780.29416"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "241"
-         endingLineNumber = "241"
+         startingLineNumber = "266"
+         endingLineNumber = "266"
          landmarkName = "-connection:didReceiveAuthenticationChallenge:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -583,11 +583,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404402387.254408"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "220"
-         endingLineNumber = "220"
+         startingLineNumber = "245"
+         endingLineNumber = "245"
          landmarkName = "-connection:canAuthenticateAgainstProtectionSpace:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -597,11 +597,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCFeed.m"
-         timestampString = "404402421.519495"
+         timestampString = "404545604.011209"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "228"
-         endingLineNumber = "228"
+         startingLineNumber = "253"
+         endingLineNumber = "253"
          landmarkName = "-connection:didReceiveAuthenticationChallenge:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -695,11 +695,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404427067.430174"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "269"
-         endingLineNumber = "269"
+         startingLineNumber = "275"
+         endingLineNumber = "275"
          landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -709,11 +709,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404424262.611322"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "136"
-         endingLineNumber = "136"
+         startingLineNumber = "142"
+         endingLineNumber = "142"
          landmarkName = "@implementation RCPreferencesController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -723,11 +723,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404424262.611322"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "124"
-         endingLineNumber = "124"
+         startingLineNumber = "130"
+         endingLineNumber = "130"
          landmarkName = "-setRunOnLaunch:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -737,11 +737,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404424426.985534"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "122"
-         endingLineNumber = "122"
+         startingLineNumber = "128"
+         endingLineNumber = "128"
          landmarkName = "-setRunOnLaunch:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -751,11 +751,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404488940.050152"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "392"
-         endingLineNumber = "392"
+         startingLineNumber = "399"
+         endingLineNumber = "399"
          landmarkName = "-feedsConfigWillUpdate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -765,11 +765,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404488940.050152"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "400"
-         endingLineNumber = "400"
+         startingLineNumber = "407"
+         endingLineNumber = "407"
          landmarkName = "-feedsConfigDidUpdate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -779,11 +779,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404488940.050152"
+         timestampString = "404544921.49221"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "413"
-         endingLineNumber = "413"
+         startingLineNumber = "420"
+         endingLineNumber = "420"
          landmarkName = "-feedsConfigDidUpdate:"
          landmarkType = "5">
       </FileBreakpoint>

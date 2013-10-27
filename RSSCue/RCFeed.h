@@ -48,6 +48,8 @@ typedef enum {
     NSString *_description;
     NSData * _imageData;
     NSString *_imageURL;
+    NSString *_customImageURL;
+    NSData * _customImageData;
     
     NSArray *_items;
     NSError *_error;
@@ -68,6 +70,7 @@ typedef enum {
 @property (readonly) NSString * name;
 @property (readonly) NSString * uuid;
 @property (readonly) NSData * imageData;
+@property (readonly) NSData * customImageData;
 @property (retain) id <RCFeedDelegate> delegate;
 @property (assign) RC_FEED_STATE state;
 
@@ -79,5 +82,6 @@ typedef enum {
 
 - (NSMutableDictionary*) configuration;
 - (void) setImageURL:(NSString*)url;
+- (void) setCustomImageURL:(NSString*)url;
 
 @end

@@ -97,8 +97,10 @@ static NSString *const kServiceName = @"RSS Cue";
             if ([[(NSURL *)thePath path] hasPrefix:@"/Applications/MyApp.app"])
                 exists = YES;
         }
+        CFRelease(loginItemsArray);
         return exists;
     };
+    CFRelease(loginItemsArray);
     return NO;
 }
 
@@ -111,9 +113,13 @@ static NSString *const kServiceName = @"RSS Cue";
         *pItemRef = (LSSharedFileListItemRef)item;
         NSURL* path;
         if (LSSharedFileListItemResolve(*pItemRef, 0, (CFURLRef*) &path, NULL) == noErr) {
-            if ([path isEqual:appPath]) return YES;
+            if ([path isEqual:appPath]) {
+                CFRelease(loginItemsArray);
+                return YES;
+            }
         }
     };       
+    CFRelease(loginItemsArray);
     return NO;
 }
 -(void)setRunOnLaunch:(NSNumber*)runOnLaunch{
@@ -190,10 +196,10 @@ static NSString *const kServiceName = @"RSS Cue";
     NSString * summary=[config valueForKey:@"description"];if (summary==nil) summary=@"";
     NSDate * lastFetch=[config valueForKey:@"lastFetch"];
     NSString * lastFetchTxt;
-
+    
     id total;
     id reported;
-
+    
     if (lastFetch) {
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         [df setDateFormat:@"MMM dd, yyyy HH:mm:ss"];
@@ -247,20 +253,20 @@ static NSString *const kServiceName = @"RSS Cue";
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-
+    
 }
 - (void) awakeFromNib {
     [self setControlsEnabled];
     [self updateInfoText];
     
     [_feedsArrayController addObserver:self forKeyPath:@"selection" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:nil];    
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(feedsConfigWillUpdate:)
                                                  name:@"feeds_config_to_be_updated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                         selector:@selector(feedsConfigDidUpdate:)
-                                             name:@"feeds_config_updated" object:nil];
+                                             selector:@selector(feedsConfigDidUpdate:)
+                                                 name:@"feeds_config_updated" object:nil];
 }
 #pragma mark Controls observers & delegators
 
@@ -281,7 +287,7 @@ static NSString *const kServiceName = @"RSS Cue";
 - (void)controlTextDidEndEditing:(NSNotification *)aNotification {
     // The problem with this is the method may be called by the code, not by user action
     // I detect this with _isEditing=Yes/No
-     NSAssert(!_isEditing || !_isConfigUpdatingOutside,@"External update must be disable while the Preferences are editing");
+    NSAssert(!_isEditing || !_isConfigUpdatingOutside,@"External update must be disable while the Preferences are editing");
     if (_isEditing){
         NSString* uuid=[self selectedUUID];
         NSAssert(uuid,@"If it was manual editing then uuid must be set. If it was not then isEditing must be NO");
@@ -313,7 +319,7 @@ static NSString *const kServiceName = @"RSS Cue";
     [self endEditing];
     
     NSInteger button=[sender selectedSegment];
-
+    
     
     NSArray * selection=[_feedsArrayController selectedObjects];
     NSDictionary * config=[selection count]>0?[selection objectAtIndex:0]:nil;
@@ -334,6 +340,7 @@ static NSString *const kServiceName = @"RSS Cue";
                                      [NSNumber numberWithBool:NO],@"enabled",
                                      [NSNumber numberWithInt: 3],@"max",
                                      [NSNumber numberWithInteger:60],@"interval",
+                                     @"",@"img",
                                      nil];
             [_feedsArrayController addObject:newConfig];
             [_feedsArrayController setSelectedObjects:[NSArray arrayWithObject: newConfig]];
@@ -417,7 +424,7 @@ static NSString *const kServiceName = @"RSS Cue";
 
 #pragma mark FeedDelegate
 -(void) feedFailed:(RCFeed *)feed {
-
+    
     
     [self.progress stopAnimation:self];
     NSAlert* msgBox = [NSAlert alertWithError:feed.error];

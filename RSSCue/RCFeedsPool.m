@@ -127,15 +127,17 @@ static RCFeedsPool * _sharedPool;
         for(RCItem * i in feed.items) i.reported=YES;
         feed.reported=(unsigned int)feed.items.count;
     }else{
+        NSDictionary* config=[feed configuration];
         unsigned int repc=0,rept=0;
-        unsigned int max=[[feed.configuration objectForKey:@"max"] unsignedIntValue];
+        unsigned int max=[[config objectForKey:@"max"] unsignedIntValue];
+        [feed setCustomImageURL:[config objectForKey:@"img"]];// may change between runs so need to be refreshed
         
         for(RCItem * i in feed.items){
             if (!i.isReported){
                 [GrowlApplicationBridge notifyWithTitle:i.title
                                             description:[NSString stringWithFormat:@"%@",i.description]
                                        notificationName:@"ItemArrived"
-                                               iconData:feed.imageData 
+                                               iconData:(feed.customImageData?feed.customImageData:feed.imageData)
                                                priority:0
                                                isSticky:NO
                                            clickContext:i.link];

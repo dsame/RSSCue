@@ -71,9 +71,27 @@ typedef enum {
         _imageData=nil;        
     }
 }
+- (void) setCustomImageURL:(NSString *)url{
+    if (url==nil && _customImageURL==nil) return;
+    if ([url isEqualToString:_customImageURL]) return;
+    [_customImageURL release];
+    [_customImageData release];
+    if (url!=nil){
+        NSImage *image=[[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:url]];
+        _customImageData=[[image TIFFRepresentation] retain];
+        [image release];
+    }else{
+        _customImageURL=nil;
+        _customImageData=nil;        
+    }
+}
 
 - (NSData *)imageData{
     return _imageData;
+}
+
+- (NSData *)customImageData{
+    return _customImageData;
 }
 
 #pragma mark Initialization
@@ -85,6 +103,13 @@ typedef enum {
     self.delegate=delegate;
     _uuid=[uuid retain];
     _state=kUndefined;
+    NSDictionary * config=[NSUserDefaults configForFeedByUUID:uuid];
+    NSString *imgURL=[config objectForKey:@"img"];
+    if (imgURL && ![imgURL isEqualToString:@""]){
+        NSImage *image=[[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:imgURL]];
+        _customImageData=[[image TIFFRepresentation] retain];
+        [image release];
+    }
 	return self;
 }
 
