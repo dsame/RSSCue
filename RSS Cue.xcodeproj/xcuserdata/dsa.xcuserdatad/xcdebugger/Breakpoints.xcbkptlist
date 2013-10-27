@@ -429,11 +429,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "RSSCue/RCPreferencesController.m"
-         timestampString = "404427067.430174"
+         timestampString = "404488940.050152"
          startingColumnNumber = "2147483647"
          endingColumnNumber = "2147483647"
-         startingLineNumber = "393"
-         endingLineNumber = "393"
+         startingLineNumber = "394"
+         endingLineNumber = "394"
          landmarkName = "-feedsConfigWillUpdate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -743,6 +743,48 @@
          startingLineNumber = "122"
          endingLineNumber = "122"
          landmarkName = "-setRunOnLaunch:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "RSSCue/RCPreferencesController.m"
+         timestampString = "404488940.050152"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "392"
+         endingLineNumber = "392"
+         landmarkName = "-feedsConfigWillUpdate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "RSSCue/RCPreferencesController.m"
+         timestampString = "404488940.050152"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "400"
+         endingLineNumber = "400"
+         landmarkName = "-feedsConfigDidUpdate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "RSSCue/RCPreferencesController.m"
+         timestampString = "404488940.050152"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "413"
+         endingLineNumber = "413"
+         landmarkName = "-feedsConfigDidUpdate:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

@@ -104,7 +104,7 @@ typedef enum {
     [_error release];
     _error=nil;
     if (self.connection!=nil) {
-        NSLog(@"Problem with \"%@\" feed: previous connections is not freed, it may be either memory leak or trying to connect too fast",self.name);
+        NSLog(@"Problem with \"%@\" feed: previous connections has not finished yet.",self.name);
         return;
     };
     _noCredentials=NO;
@@ -449,6 +449,7 @@ typedef enum {
     for (RCItem* i in _items){
         i.reported=NO;
     }
+    _reported=0;
 }
 
 @end

@@ -208,7 +208,7 @@ static NSString *const kServiceName = @"RSS Cue";
     }
     
     
-    [self.info setStringValue:[NSString stringWithFormat:@"%@\nURL: %@\nTotal number of entries: %@\nNumber of shown entries: %@\nLast fetch: %@\n%@",title,link,total,reported, lastFetchTxt,summary]];
+    [self.info setStringValue:[NSString stringWithFormat:@"%@\nURL: %@\nTotal number of entries: %@\nNumber of shown entries: %@\nLast update: %@\n%@",title,link,total,reported, lastFetchTxt,summary]];
 }
 
 - (bool)endEditing;
@@ -372,6 +372,7 @@ static NSString *const kServiceName = @"RSS Cue";
         case 3:
             if (f){//NSAssert(f!=nil, @"Attempt to refresh a feed with no configuraiton or unexisting feed");
                 [f makeUnreported];
+                [self updateInfoText];
                 NSAlert* alert=[NSAlert alertWithMessageText:@"The feed has been marked as never read" defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@"Number of entries: %u",[f.items count]];
                 [alert runModal];
             }else{
