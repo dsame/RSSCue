@@ -17,19 +17,19 @@
   <body>
 
       <header>
-        <h1>RSS Cue – the only Mac OS X RSS Notifier</h1>
+        <h1>RSS Cue &mdash; the only Mac OS X RSS Notifier</h1>
         <p>RSS is for News. Late News is not News. Too Many News are not News.</p>
       </header>
 
       <div id="banner">
-        <span id="logo"></span>
+        <span id="logo-rsscue"></span>
 
         <a href="https://github.com/dsame/RSSCue" class="button fork"><strong>View On GitHub</strong></a>
         <div class="downloads">
-          <span>Downloads:</span>
+          <span>Download:</span>
           <ul>
-            <li><a href="https://github.com/dsame/RSSCue/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/dsame/RSSCue/tarball/master" class="button">TAR</a></li>
+            <li><a href="https://github.com/dsame/RSSCue/releases/download/v1.0.18/RSSCue.pkg" class="button">Installer Package</a></li>
+            <!--li><a href="https://github.com/dsame/RSSCue/tarball/master" class="button">TAR</a></li-->
           </ul>
         </div>
       </div><!-- end banner -->
@@ -39,15 +39,75 @@
         <ul></ul>
       </nav>
       <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+			<h2>The Inspiration</h2>
+<p>Skip this part full of grief and savage. There's nothing worth to waste your time here</p>
+<p>I can not live without RSS notification. Really. While working on the main document it necessery to keep an eye on what's going on around: issue tracking system comments, SVN repository updates, client's inquires. Even if i can not or i do not need to react immediately i am still wish to be informed the things are arriving and are handled. It calms. Or raises the alert in time, not hours or days ago i'll be able to crawl through the hundreds of emails. Yes, there are chances i miss something, but "something" is not equal "all" and still can see the missed notes right at their origins. So i need an aggregator from the different sources and a system to notify me about the changes immediately</p>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>It's unbelievabale but Mac OS X is not able to hepl with this pretty simple demand.</p>
+<p>The deceased Google Reader and its retarted reproductions were almost that i needed, but, listen, i did not want my extremely important notes to be buried into the grave of thousands never read financial, political and humor articles. I want to see the notifications <b>immediately</b> and read the rest of the garbage when i'll have a time. And besides those eaters of gigabytes make me outraged: a tool intended  to improve the productivity becomes a gizmo causing me to spent a life watching at rounding ball.Yes, i know about the tags, folders and so on... but... What for? And how can the help me to do not see the pop-ups about Rush Limbaugh speaches during my workitme?</p>
+<p>Of course, there are few apps, the Google brings on "RSS notifier Mac os x". The question is - does anybody including the authors use them? None of them work well. Most do not provide login/password capbilites - say farewell to beloved Atlassian Jira, the others do not understand Atom feeds, and one is  simple a junk. Ironically, the latter is the only paid.</p>
+<p>Thus the idea of "Notifier the Wanted" was conceived</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+	<h2>The Requirements</h2>
+<pre><code>
+Observable.
 </code></pre>
+
+40 black rectangles with small white letters being showed for few seconds says me nothing but "How the guy who programmed such behavior was able to do not kill himself with a fork in his childhood? He is definitely an idiot which could not avoid such incedent".
+
+<pre><code>
+Non intrusive.
+</code></pre>
+40 black rectangles with small letters covering all my screen in the time i was struggling to draw a damned arrow from a damned rectangle to a damned circle is in turn a chance for me to die from hearth attack.
+
+<pre><code>
+Avoidable.
+</pre></code>
+If it still is intrusive one must have ability to quickly get rid off the notifications just one time or for a some period or forever. 
+
+<pre><code>
+Comprehensive
+</pre></code>
+It must work in any case. Period.
+
+<pre><code>
+Obvious.
+</pre></code>
+If it can not work it must explain the reason and warn. Still being non-itrusive.
+
+
+<pre><code>
+Effective.
+</pre></code>
+The small task must be solved with the small cost. "Let me remind the PCs you owned in time of povetry and their nice hourglasses? Click <i>Open</i> on a folder and take a cup of cofee, it was a good time, huh? - No, thanks. I am still not reach enough to pay for this enjoyment in AppStore."
+
+
+
+	<h2>The Implementation</h2>
+	<h3>Growl notifcation</h3>
+<p>
+The pop-up implemeted with the Growl Framework which has been de-fact notification standard for years.
+</p>
+<img src="images/popup.png"/>
+<p>
+As any Growl popup the RSS Cue notifications can be closed with a click <b>(1)</b>. Seems very easy and obvious, but not for the most of the developers.</p>
+<p>If there's an image or logo provided with RSS it will be shown on left margin <b>(2)</b> to help the idetinfication of the origing of the notification with a glance.</p>
+
+	<h3>Setup feeds</h3>
+<img src="images/feeds.png"/>
+<ul>
+<li><p><b>1.</b> A feed can have a nickname in order to reference it.</p></li>
+<li><p><b>2.</b> Every feed has its own update frequencey in order to balance the urgency and message flooding.</p></li>
+<li><p><b>3.</b> No more than given number of the notification will be shown on the screen for each update. The rest will stay in queue and be shown in next fetch. Yes, correct, it is possible some messages will sit in the queue forever if the number of entries is small. This setting gives an user ability to avoid the screen all covered with the messages.</p></li>
+<li><p><b>4.</b> It's strange, but login/password seems to be the qunique feature, nobody cares about. It is need to say only so-called "Basic" authorization is handled so far. It works for most (in fact all known) feeds, but in theory would fail on some.</p></li>
+<li><p><b>5.</b> There's no need to remove a feed if it should just paused for a time. The feed is created as disabled and nothing prevents to return it in that state. The "enabled" checkbox is also a substitute for bookmarks - disabled feeds are kept into settings ready to be launched on demand.</p></li>
+<li><p><b>6.</b> An user knows the state of feed. A <i>Console</i> application may be used to get more info.</p></li>
+<li><p><b>7.</b> Refresh button "unreads" the feed and makes the notifications to appear once more time on the next update cycle.</p></li>
+<li><p><b>8.</b> Test button allows to ensure the URL and login/passwords are correct just as an user starts to doubt everything is goo:</p>
+<img src="images/badurl.png"/>
+</li>
+</ul>
+<h2>Quality Assurance</h2>
 
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
@@ -73,6 +133,7 @@ $ git checkout gh-pages
       </section>
       <footer>
         <p>Project maintained by <a href="https://github.com/dsame">dsame</a></p>
+        <p>Development sponsored by <a href="http://www.webloftdesigns.com/">WEBLOFTDESIGNS</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
       </footer>
     </div>

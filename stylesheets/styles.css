@@ -781,14 +781,15 @@ header p {
 #banner ul li a.button {
   background-color: #FFE788;
 }
-#banner #logo {
+
+#banner #logo-rsscue {
   position: absolute;
   height: 36px;
-  width: 36px;
+  width: 26px;
   right: 7px;
   top: 7px;
   display: block;
-  background: url(../images/octocat-logo.png);
+  background: url(../images/rss-status-item.png);
 }
 
 section {
