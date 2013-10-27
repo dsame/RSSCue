@@ -597,6 +597,10 @@ code {
   border-radius: 2px;
 }
 
+code.green {
+  background: #0a0;
+}
+
 pre {
   padding: 8px 15px;
   background: #333333;
@@ -810,6 +814,9 @@ section {
   -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.09), inset 0px 0px 2px 2px rgba(255, 255, 255, 0.5), inset 0 0 5px 5px rgba(255, 255, 255, 0.4);
   -o-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.09), inset 0px 0px 2px 2px rgba(255, 255, 255, 0.5), inset 0 0 5px 5px rgba(255, 255, 255, 0.4);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.09), inset 0px 0px 2px 2px rgba(255, 255, 255, 0.5), inset 0 0 5px 5px rgba(255, 255, 255, 0.4);
+	background-image: url(../images/rss-512.jpg);
+	background-repeat: no-repeat;
+	background-position: 70px 90px;
 }
 
 small {
