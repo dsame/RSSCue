@@ -326,6 +326,12 @@ typedef enum {
     }else if (_state==kParserImageMet){
         if ( [elementName isEqualToString:@"url"]) {
                 _waitFor=kWaitForImage;
+		}else if ( [elementName isEqualToString:@"item"]|| [elementName isEqualToString:@"entry"]) {
+            _atomSummary=NO;
+            _atomContent=NO;
+            _atomSelfLink=NO;
+            _state=kParserItemMet;
+            [_delegate feedStateChanged:self];                            
 		}
 	}else if (_state==kParserItemMet){
 		if ( [elementName isEqualToString:@"title"]) {
