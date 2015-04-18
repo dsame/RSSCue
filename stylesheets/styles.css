@@ -827,6 +827,10 @@ small {
   font-size: 12px;
 }
 
+div.ad {
+  width: 340px;
+  float: right;
+}
 nav {
   width: 230px;
   position: fixed;
