@@ -13,8 +13,8 @@
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<meta name="keywords" content="Mac OS X, RSS, Notifier, Atom, passwod, growl"/>
-<meta name="description" content="A Mac OS notifier to fetch the RSS feeds on the schedule, show by portions, handle password protected sources with Growl support."/>
+<meta name="keywords" content="RSS, Notifier, Atom, productivity, Mac OS X,passwod, growl"/>
+<meta name="description" content="A Mac OS X notifier to fetch the RSS feeds on the schedule, show by portions, handle password protected sources with Growl support."/>
 
 <meta property="og:image" content="http://rsscue.dsa.me/images/rss-96.png"/>
 <meta property="og:title" content="RSS Cue – the only RSS Notifier on Macs"/>
@@ -23,10 +23,10 @@
 <link rel="canonical" href="http://rsscue.dsa.me" />
 
   </head>
-  <body>
+  <body itemscope itemtype="http://schema.org/SoftwareApplication">
 
-      <header>
-        <h1>RSS Cue &mdash; the only RSS Notifier on Macs</h1>
+      <header >
+        <h1><span itemprop="name">RSS</span> Cue &mdash; the only RSS Notifier on <span itemprop="operatingSystem">Mac OS X</span></h1>
         <p>RSS is for News. Late News is not News. Too Many News are not News.</p>
       </header>
 
@@ -48,7 +48,7 @@
       </nav>
       <section>
 			<h2 class="">Inspiration</h2>
-<p><a class="internal" href="#implementation">Skip</a> this part full of grief and savage or just <code class="downl"><a href="https://github.com/dsame/RSSCue/releases/download/v1.0.20/RSSCue.pkg">download</a></code> the install package. There's nothing worth to waste your time reading the stuff below.</p>
+<p><a class="internal" href="#implementation">Skip</a> this part full of grief and savage or just <code class="downl"><a itemprop="downloadURL" href="https://github.com/dsame/RSSCue/releases/download/v1.0.20/RSSCue.pkg">download</a></code> the install package. There's nothing worth to waste your time reading the stuff below.</p>
      <div class="ad">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- rsscue in text -->
@@ -60,7 +60,7 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 </div>
-<p>I can not live without RSS notification. Really. While working on the main document it is necessery to keep an eye on what's going on around: emails, issue tracking system comments, SVN repository updates, client's inquires. Even if i can not or i do not need to react immediately i am still wish to be informed the things are arriving and are handled. It calms. Or raises the alert in time, not hours or days ago i'll be able to crawl through the hundreds of emails. Yes, there are chances i miss something, but "something" is not equal "all". This is why i need an aggregator from the different sources and a system to notify me about the changes immediately</p>
+<p>I can not live without RSS notification. Really. It's all about <span itemprop="applicationCategory">productiviity</p>. While working on the main document it is necessery to keep an eye on what's going on around: emails, issue tracking system comments, SVN repository updates, client's inquires. Even if i can not or i do not need to react immediately i am still wish to be informed the things are arriving and are handled. It calms. Or raises the alert in time, not hours or days ago i'll be able to crawl through the hundreds of emails. Yes, there are chances i miss something, but "something" is not equal "all". This is why i need an aggregator from the different sources and a system to notify me about the changes immediately</p>
 
 <p>It's unbelievable but Mac is not able to help with this pretty simple demand.</p>
 <p>The deceased Google Reader and its retarded reproductions were almost that i needed, but, listen, i do not want my extremely important notes to be buried among the thousands never read financial, political and humor articles. I want to see the notifications on some feeds <b>immediately</b> and read the rest of the garbage when i'll have a time.
@@ -71,6 +71,7 @@ And besides those eaters of gigabytes make me outraged: a tool intended  to impr
 <p>Thus the idea of "Notifier the Wanted" was conceived</p>
 
 	<h2>Requirements</h2>
+<section itemprop="featureList">
 <pre><code>
 Observable.
 </code></pre>
@@ -102,6 +103,8 @@ If it can not work it must explain the reason and warn. Still being non intrusiv
 Effective.
 </pre></code>
 The small task must be solved with the small cost. "Let me remind the PCs you owned in time of poverty and their nice hourglasses? Click <i>Open</i> on a folder and take a cup of cofee, it was a good time, huh? - No, thanks. I am still not reach enough to pay for this enjoyment in AppStore."
+</section>
+
 
 
 <div id="implementation"></div>
